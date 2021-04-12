@@ -1,0 +1,3 @@
+[submodule "WW_Hacking_API"]
+	path = WW_Hacking_API
+	url = https://github.com/LagoLunatic/WW_Hacking_API.git
