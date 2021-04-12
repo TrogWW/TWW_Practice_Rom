@@ -28,19 +28,13 @@ typedef struct Frame_Advance {
     bool advanceFrame;
 } Frame_Advance;
 
-Frame_Advance* Create_Frame_Advance(bool value){
-    Frame_Advance* new_Instance = (Frame_Advance*)JKRHeap__alloc(sizeof(Frame_Advance),0,0);
-    new_Instance->enabled = value;
-    new_Instance->toggleFrame = *FRAME_COUNT_PTR;
-    new_Instance->advanceFrame = false;
-    return new_Instance;
-}
+Frame_Advance frame_advance = {
+  .enabled = false,
+  .toggleFrame = FRAME_COUNT_PTR,
+  .advanceFrame = false,
+};
 
-static Frame_Advance *frame_advance;
 void _main_loop(){
-    if(frame_advance == 0xdeadbabe){
-        frame_advance = Create_Frame_Advance(false);
-    }
     m_Do_controller_pad__mDoCPd_Read();
     JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
     CButton* mButton = (CButton*)&gamePad->mButton;
@@ -48,28 +42,28 @@ void _main_loop(){
     short checkButtonCombo = D_PAD_LEFT_PRESSED + Z_PRESSED;
     int currentFrame = *FRAME_COUNT_PTR;
     if(currentInput == checkButtonCombo){
-        if(frame_advance->toggleFrame + 10 <= currentFrame){
-            if(frame_advance->enabled){
-                frame_advance->enabled = false;
+        if(frame_advance.toggleFrame + 10 <= currentFrame){
+            if(frame_advance.enabled){
+                frame_advance.enabled = false;
             }
             else{
-                frame_advance->enabled = true;
+                frame_advance.enabled = true;
             }
-            frame_advance->toggleFrame = currentFrame;
+            frame_advance.toggleFrame = currentFrame;
         }
     }
-    if(frame_advance->enabled){
+    if(frame_advance.enabled){
         if(currentInput & D_PAD_DOWN_PRESSED){
-            if(frame_advance->advanceFrame){
+            if(frame_advance.advanceFrame){
                 JUTGamePad__read(0);
                 m_Do_audio__mDoAud_Execute();
                 f_ap_game__fapGm_Execute();
-                frame_advance->advanceFrame = false;
-                frame_advance->toggleFrame = 0;
+                frame_advance.advanceFrame = false;
+                frame_advance.toggleFrame = 0;
             }
         }
         else{
-            frame_advance->advanceFrame = true;
+            frame_advance.advanceFrame = true;
         }
     }
     else{
