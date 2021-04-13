@@ -8,5 +8,9 @@
 
 
 void _main_loop(){
-    _frame_advance_exec(menu.menu_settings);
+    Settings *menu_settings = menu.menu_settings;
+    if(menu_settings->frame_advance_enabled){
+        _frame_advance_exec(menu_settings);
+    }
+    _menu_exec(menu_settings);
 }

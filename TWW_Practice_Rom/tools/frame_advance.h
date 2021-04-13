@@ -47,7 +47,7 @@ void _frame_advance_exec(Settings* settings){
     short toggle_frame_advance_combo = settings->toggle_frame_advance[0] + settings->toggle_frame_advance[1];
     if(currentInput == toggle_frame_advance_combo){
         if(frame_advance.toggleFrame + 10 <= currentFrame){
-            if(frame_advance.enabled){
+            if(frame_advance.enabled == true){
                 frame_advance.enabled = false;
             }
             else{
@@ -56,9 +56,9 @@ void _frame_advance_exec(Settings* settings){
             frame_advance.toggleFrame = currentFrame;
         }
     }
-    if(frame_advance.enabled){
+    if(frame_advance.enabled == true){
         if(currentInput & D_PAD_DOWN){
-            if(frame_advance.advanceFrame){
+            if(frame_advance.advanceFrame == true){
                 /*JUTGamePad__read(0);*/        /*This does not work...need a way to buffer digital inputs*/
                 _frame_advance_advance_frame();
                 frame_advance.advanceFrame = false;
