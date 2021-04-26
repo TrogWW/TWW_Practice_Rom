@@ -5,14 +5,19 @@
 #include _WW_DEFINES_H
 #include _WW_FUNCTIONS_H
 #include _WW_VARIABLES_H
-#include "menu.h"
+#include "input.h"
+#include "settings.h"
+#include "menu_new.h"
 #include "tools/frame_advance.h"
 
-
 void _main_loop(){
-    Settings *menu_settings = menu.menu_settings;
-    if(menu_settings->frame_advance_enabled){
-        _frame_advance_exec(menu_settings);
+    Update_Digital_Inputs();
+    _menu_exec(&settings);
+
+    if(settings.frame_advance_enabled){
+        _frame_advance_exec(&settings);
     }
-    _menu_exec(menu_settings);
+    else{
+        _menu_exec(&settings);
+    }
 }

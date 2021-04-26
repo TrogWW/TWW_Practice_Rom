@@ -19,7 +19,43 @@
     
     <!--children-->
     <!--Transparent blue background-->
+    <window id="BG00">
+      <rectangle>
+        <x>0</x>
+        <y>0</y>
+        <width>640</width>
+        <height>480</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>640</width>
+          <height>480</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>0000FFFF</color>
+				</top-left>
 
+				<top-right>
+					<color>0000FFFF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>0000FFFF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>0000FFFF</color>
+				</bottom-right>
+			</corners>
+    </window>
 
     <!--Main menu-->
     <window id="MAIN">
@@ -59,6 +95,10 @@
 				</bottom-right>
 			</corners>
       
+
+      
+
+    </window>
       <textbox id="WARP">
         <rectangle>
           <x>60</x>
@@ -77,8 +117,7 @@
         </colors>
         <alpha inherit="False">255</alpha>
       </textbox>
-      
-      <textbox id="INVN">
+            <textbox id="INVN">
         <rectangle>
           <x>55</x>
           <y>85</y>
@@ -185,8 +224,6 @@
           <bottom>FFFFFFFF</bottom>
         </colors>
       </textbox>
-    </window>
-    
     <!--Warp Menu-->
     <window id="WPMN" visible="False">
       <rectangle>

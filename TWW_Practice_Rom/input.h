@@ -1,3 +1,5 @@
+#ifndef INPUT_H_INCLUDED
+#define INPUT_H_INCLUDED
 #pragma region _input_defines
     #ifndef _WW_DEFINES_H
         #define _WW_DEFINES_H "../WW_Hacking_API/vanilla_defines/ww_defines.h"
@@ -27,7 +29,64 @@
 # define Y_PRESSED (1 << 11)
 # define START_PRESSED (1 << 12)
 
-enum Digital_Input {
+typedef struct DigitalInput {
+    int input;
+    bool pressed;
+    bool held;
+} DigitalInput;
+
+DigitalInput DIGITAL_INPUTS[12] = {
+    { .input = D_PAD_LEFT_PRESSED },
+    { .input = D_PAD_RIGHT_PRESSED },
+    { .input = D_PAD_DOWN_PRESSED },
+    { .input = D_PAD_UP_PRESSED },
+    { .input = Z_PRESSED },
+    { .input = R_PRESSED },
+    { .input = L_PRESSED },
+    { .input = X_PRESSED },
+    { .input = Y_PRESSED },
+    { .input = A_PRESSED },
+    { .input = B_PRESSED },
+    { .input = START_PRESSED }
+};
+void Update_Digital_Inputs(){
+    JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
+    CButton* mButton = (CButton*)&gamePad->mButton;
+    short currentInput = (short)mButton->field_0x0 & 0x0000FFFF;
+    for(int i = 0; i < 12; i++){
+        Update_Digital_Inputs(DIGITAL_INPUTS[i], currentInput);
+    }
+}
+void Update_Digital_Input(DigitalInput *this, short currentInput){
+    if(this->input & currentInput != 1){
+        this->held = false;
+        this->pressed = false;
+    }
+    else{
+        if(this->pressed){
+            this->held = true;
+        }
+        else{
+            this->pressed = true;
+            this->held = false;
+        }
+    }
+}
+enum Inputs {
+    D_PAD_LEFT = 0,
+    D_PAD_RIGHT = 1,
+    D_PAD_DOWN = 2,
+    D_PAD_UP = 3,
+    Z = 4,
+    R = 5,
+    L = 6,
+    A = 7,
+    B = 8,
+    X = 9,
+    Y = 10,
+    START = 11
+} Inputs;
+/*enum Digital_Input {
     D_PAD_LEFT = D_PAD_LEFT_PRESSED,
     D_PAD_RIGHT = D_PAD_RIGHT_PRESSED,
     D_PAD_DOWN = D_PAD_DOWN_PRESSED,
@@ -41,16 +100,15 @@ enum Digital_Input {
     Y = Y_PRESSED,
     START = START_PRESSED
 } Digital_Input;
-
-byte nthByte(int number, int n){
-    return (number >> (8*n)) & 0xff;
-}
+*/
+/*
 short _input_current_digital(){
     JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
     CButton* mButton = (CButton*)&gamePad->mButton;
     short currentInput = (short)mButton->field_0x0 & 0x0000FFFF;
     return currentInput;
 }
+
 byte _input_current_main_stick(){
     JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
     CButton* mButton = (CButton*)&gamePad->mButton;
@@ -78,3 +136,5 @@ bool _input_c_stick_match(short input){
     short currentInput = _input_current_c_stick();
     return currentInput == input;
 }
+*/
+#endif

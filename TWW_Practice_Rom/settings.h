@@ -1,7 +1,7 @@
-#ifndef _INPUT_H
-    #define _INPUT_H "input.h"
-    #include _INPUT_H
-#endif
+#ifndef SETTINGS_H_INCLUDED
+#define SETTINGS_H_INCLUDED
+
+#include "input.h"
 
 typedef struct Settings {
     bool frame_advance_enabled;
@@ -11,6 +11,7 @@ typedef struct Settings {
 
 Settings settings = {
   .frame_advance_enabled = true,
-  .toggle_frame_advance = {Z, D_PAD_LEFT},
-  .toggle_menu_combo = {X, D_PAD_LEFT}
+  .toggle_frame_advance = {Z_PRESSED, D_PAD_LEFT_PRESSED},
+  .toggle_menu_combo = {X_PRESSED, D_PAD_LEFT_PRESSED}
 };
+#endif
