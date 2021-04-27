@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<screen>
+  <info>
+    <width>640</width>
+    <height>480</height>
+    <tint-color>80808000</tint-color>
+  </info>
+  <search-paths>
+    <path>resources/</path>
+  </search-paths>
+  
+  <pane id="ROOT">
+    <rectangle>
+      <x>0</x>
+      <y>0</y>
+      <width>640</width>
+      <height>480</height>
+    </rectangle>
+    
+    <!--children-->
+    <!--Transparent blue background-->
+    <window id="BG00">
+      <rectangle>
+        <x>0</x>
+        <y>0</y>
+        <width>640</width>
+        <height>480</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>640</width>
+          <height>480</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>0000FFFF</color>
+				</top-left>
+
+				<top-right>
+					<color>0000FFFF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>0000FFFF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>0000FFFF</color>
+				</bottom-right>
+			</corners>
+    </window>
+
+    <!--Main menu-->
+    <window id="MAIN">
+      <rectangle>
+        <x>0</x>
+        <y>0</y>
+        <width>135</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>45</x>
+          <y>45</y>
+          <width>135</width>
+          <height>255</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners>
+      
+
+      
+
+    </window>
+    <!--Warp Menu-->
+    <window id="WPMN" visible="False">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>315</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+    </window>
+    <window id="CHTS" visible="False">
+        <rectangle>
+          <x>200</x>
+          <y>45</y>
+          <width>220</width>
+          <height>115</height>
+        </rectangle>
+        
+        <content>
+          <rectangle>
+            <x>0</x>
+            <y>0</y>
+            <width>220</width>
+            <height>315</height>
+          </rectangle>
+        </content>
+        
+        <alpha>155</alpha>
+              
+        <corners>
+          <top-left>
+            <color>000000FF</color>
+          </top-left>
+
+          <top-right>
+            <color>000000FF</color>
+          </top-right>
+
+          <bottom-left>
+            <color>000000FF</color>
+          </bottom-left>
+
+          <bottom-right>
+            <color>000000FF</color>
+          </bottom-right>
+        </corners>    
+      </window>
+      <window id="FLGS" visible="False">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>315</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+    </window>
+    <window id="WTCH" visible="False">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>315</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+    </window>
+    <window id="DEBG" visible="False">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>400</width>
+          <height>400</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+    </window>
+    <window id="STNG" visible="False">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>220</width>
+          <height>315</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+    </window>
+  </pane>
+</screen>

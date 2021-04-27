@@ -29,11 +29,13 @@ struct base_pane {
 };
 struct base_pane_vtbl {
     void (*draw)(base_pane *this);
+    void (*hide)(base_pane *this);
     void (*update_cursor)(base_pane *this);
 };
 
 void base_pane___new(base_pane *this);
 void base_pane_draw(base_pane *this);
+void base_pane_hide(base_pane *this);
 void base_pane_update_cursor(base_pane *this);
 
 #endif

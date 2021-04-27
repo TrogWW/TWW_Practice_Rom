@@ -18,6 +18,7 @@
 typedef struct menu_pane menu_pane;
 typedef struct menu_pane_vtbl {
     void (*draw)(menu_pane *this);
+    void (*hide)(menu_pane *this);
     void (*update_cursor)(menu_pane *this);
 } menu_pane_vtbl;
 struct menu_pane {
@@ -30,6 +31,7 @@ struct menu_pane {
 };
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc);
 void menu_pane_draw(menu_pane *this);
+void menu_pane_hide(menu_pane *this);
 void menu_pane_close(menu_pane *this);
 void menu_pane_update_cursor(menu_pane *this);
 void menu_pane__update_dDlst(menu_pane *this);

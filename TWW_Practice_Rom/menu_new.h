@@ -36,7 +36,7 @@ void _menu_exec(Settings* settings){
         else{
             if(DIGITAL_INPUTS[B].pressed){
                 main_pane.active = false;
-                menu_pane_close(&main_pane);
+                menu_pane_hide(&main_pane);
             }
         }
         if(main_pane.active){

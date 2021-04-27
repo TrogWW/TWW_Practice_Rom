@@ -36,7 +36,6 @@ void _frame_advance_exec(Settings* settings){
         else{
             frame_advance.enabled = true;
         }
-
     }
     if(frame_advance.enabled == true){
         if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){

@@ -5,18 +5,23 @@
 #include "textbox/textbox.c"
 static sub_pane_vertical_vtbl sub_pane_vertical____vt = {
     sub_pane_vertical_draw,
+    sub_pane_vertical_hide,
     sub_pane_vertical_update_cursor
 };
 
 
 void sub_pane_vertical_draw(sub_pane_vertical *this){
     /*TO DO*/
+    this->pane->mbDraw = true;
+}
+void sub_pane_vertical_hide(sub_pane_vertical *this){
+    this->pane->mbDraw = false;
 }
 void sub_pane_vertical_update_cursor(sub_pane_vertical *this){
     /*TO DO*/
 }
 
-sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* titleText, text_color_pallete *pallete, JUTFont *font){
+sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *parent, J2DPane *pane, float xAxisOffset, float yAxisOffset, char* titleText, text_color_pallete *pallete, JUTFont *font){
     if(this == 0){
         this = (sub_pane_vertical*)JKernel__operator_new(sizeof(sub_pane_vertical));
         if(this == 0){
@@ -28,6 +33,7 @@ sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *pa
     this->base.vptr = (base_pane_vtbl *)&sub_pane_vertical____vt;
     this->parent = parent;
     this->base.width = this->parent->width;
+    this->pane = pane;
     sub_pane_setRelative_xAxisOffset(this, xAxisOffset);
     sub_pane_setRelative_yAxisOffset(this, yAxisOffset);
 

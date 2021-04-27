@@ -5,6 +5,7 @@
 
 static base_pane_vtbl base_pane____vt = {
     base_pane_draw,
+    base_pane_hide,
     base_pane_update_cursor
 };
 void base_pane___new(base_pane *this){
@@ -19,6 +20,9 @@ void base_pane___new(base_pane *this){
 
 void base_pane_draw(base_pane *this){
     //insert logic here
+}
+void base_pane_hide(base_pane *this){
+
 }
 void base_pane_update_cursor(base_pane *this){
     //insert logic here

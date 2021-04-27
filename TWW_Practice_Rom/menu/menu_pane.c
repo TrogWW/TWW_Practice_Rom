@@ -12,10 +12,18 @@
 #define GZ_MENU_BLO "gz-menu.blo"
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
-#define WARP_TEXT 0x726f6f74
+//#define WARP_TEXT 0x726f6f74
+
+#define WPMN_TEXT 0x57504D4E
+#define CHTS_TEXT 0x43485453
+#define FLGS_TEXT 0x464c4753
+#define WTCH_TEXT 0x57544348
+#define DEBG_TEXT 0x44454247
+#define STNG_TEXT 0x53544E47
 
 static menu_pane_vtbl menu_pane____vt = {
     menu_pane_draw,
+    menu_pane_hide,
     menu_pane_update_cursor
 };
 
@@ -45,19 +53,29 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     // we set the parent to use J2DScreen's vtable since J2DScreen is a child class of J2DPane.
     this->screen.parent.vtbl = &J2DScreen____vt;
     J2DScreen__set(&this->screen, GZ_MENU_BLO, menuArc);
+    
 
+
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: this->secondary_window = %d\n",this->secondary_window));
     this->active = false;
     this->base.cursor_active = true;
     this->base.xAxisOffset = 65.0f;
     this->base.yAxisOffset = 80.0f;
     this->base.width = 100.0f;
 
-    this->sub_panes[0] = sub_pane_vertical__new(this->sub_panes[0], this, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, 10.0f, 40.0f, "Cheats", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, 10.0f, 80.0f, "Flags", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, 10.0f, 120.0f, "Watches", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, 10.0f, 160.0f, "Debug", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, 10.0f, 200.0f, "Settings", &TEXT_PALLETE_GREY, 0);
+    J2DPane* warp_window = (J2DPane*)J2DScreen__search(&this->screen, WPMN_TEXT);
+    J2DPane* cheats_window = (J2DPane*)J2DScreen__search(&this->screen, CHTS_TEXT);
+    J2DPane* flags_window = (J2DPane*)J2DScreen__search(&this->screen, FLGS_TEXT);
+    J2DPane* watches_window = (J2DPane*)J2DScreen__search(&this->screen, WTCH_TEXT);
+    J2DPane* debug_window = (J2DPane*)J2DScreen__search(&this->screen, DEBG_TEXT);
+    J2DPane* settings_window = (J2DPane*)J2DScreen__search(&this->screen, STNG_TEXT);
+
+    this->sub_panes[0] = sub_pane_vertical__new(this->sub_panes[0], this, warp_window, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
+    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, 10.0f, 40.0f, "Cheats", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, 10.0f, 80.0f, "Flags", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, 10.0f, 120.0f, "Watches", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, 10.0f, 160.0f, "Debug", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, 10.0f, 200.0f, "Settings", &TEXT_PALLETE_GREY, 0);
 
 
     screen_capture___new(&this->capture);
@@ -73,24 +91,27 @@ void menu_pane_draw(menu_pane *this){
     //draw pane background
     J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
+
     //draw sub pane titles
     for(int i = 0; i < 6; i++){
         if(this->base.cursor == i){
-            this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE;     
+            this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE;
+            this->sub_panes[i]->vptr->draw(this->sub_panes[i]);     
         }
         else{
             this->sub_panes[i]->title.pallete = &TEXT_PALLETE_GREY;
+            this->sub_panes[i]->vptr->hide(this->sub_panes[i]);   
         }
         base_pane *sub_pane = this->sub_panes[i];
         GzTextBox__draw(&sub_pane->title);
     }
     //draw active sub pane
-    base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
+    //base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
 
-    active_sub_pane->vptr->draw(active_sub_pane);
+    //active_sub_pane->vptr->draw(active_sub_pane);
 }
 
-void menu_pane_close(menu_pane *this){
+void menu_pane_hide(menu_pane *this){
     dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture);
     d_menu_window__dMs_capture_c = 0;
     d_meter__dMenu_flagSet(0);
