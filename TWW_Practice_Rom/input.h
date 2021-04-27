@@ -49,29 +49,41 @@ DigitalInput DIGITAL_INPUTS[12] = {
     { .input = B_PRESSED },
     { .input = START_PRESSED }
 };
-void Update_Digital_Inputs(){
-    JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
-    CButton* mButton = (CButton*)&gamePad->mButton;
-    short currentInput = (short)mButton->field_0x0 & 0x0000FFFF;
-    for(int i = 0; i < 12; i++){
-        Update_Digital_Inputs(DIGITAL_INPUTS[i], currentInput);
+bool Is_Pressed_Not_Held(DigitalInput *this){
+    if(this->pressed == true && this->held == false){
+        return true;
+    }
+    else{
+        return false;
     }
 }
-void Update_Digital_Input(DigitalInput *this, short currentInput){
-    if(this->input & currentInput != 1){
+void Update_Digital_Input(DigitalInput *this, int currentInput){
+    int result = (int)(this->input & currentInput);
+    if(result != this->input){
         this->held = false;
         this->pressed = false;
     }
     else{
         if(this->pressed){
+            this->pressed = false;
             this->held = true;
         }
-        else{
+        else if(this->held == false){
             this->pressed = true;
             this->held = false;
         }
     }
 }
+void Update_Digital_Inputs(){
+    m_Do_controller_pad__mDoCPd_Read();
+    JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
+    CButton* mButton = (CButton*)&gamePad->mButton;
+    int currentInput = (int)mButton->field_0x0 & 0x0000FFFF;
+    for(int i = 0; i < 12; i++){
+        Update_Digital_Input(&DIGITAL_INPUTS[i], currentInput);
+    }
+}
+
 enum Inputs {
     D_PAD_LEFT = 0,
     D_PAD_RIGHT = 1,
@@ -80,10 +92,10 @@ enum Inputs {
     Z = 4,
     R = 5,
     L = 6,
-    A = 7,
-    B = 8,
-    X = 9,
-    Y = 10,
+    X = 7,
+    Y = 8,
+    A = 9,
+    B = 10,
     START = 11
 } Inputs;
 /*enum Digital_Input {

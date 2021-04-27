@@ -1,3 +1,5 @@
+#ifndef LOAD_MENU_CONTEXT_C_INCLUDED
+#define LOAD_MENU_CONTEXT_C_INCLUDED
 #include "load_menu_context.h"
 #define RES_NAME "gzmenu"
 
@@ -21,6 +23,6 @@ PhaseState load_menu(load_menu_context *this){
         return cPhs_ERROR_e;
     }
     this->mMenuResArc = resInfo->mpArchive;
-
     return cPhs_COMPLEATE_e;
 }
+#endif

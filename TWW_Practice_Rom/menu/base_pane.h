@@ -25,15 +25,15 @@ struct base_pane {
     float xAxisOffset;
     float yAxisOffset;
     float width;
-    GzTextBox *title;        //textbox title
+    GzTextBox title;        //textbox title
 };
 struct base_pane_vtbl {
-    void (*draw)(base_pane const *this);
-    void (*update_cursor)(base_pane const *this);
+    void (*draw)(base_pane *this);
+    void (*update_cursor)(base_pane *this);
 };
 
 void base_pane___new(base_pane *this);
-void base_pane_draw(base_pane const *this);
-void base_pane_update_cursor(base_pane const *this);
+void base_pane_draw(base_pane *this);
+void base_pane_update_cursor(base_pane *this);
 
 #endif

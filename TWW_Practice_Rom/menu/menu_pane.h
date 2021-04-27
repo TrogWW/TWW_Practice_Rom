@@ -13,23 +13,24 @@
 #pragma endregion _input_defines
 #include "base_pane.h"
 #include "screen_capture.h"
-
-typedef struct menu_pane_vtbl menu_pane_vtbl;
+#include "menu_ddlst.h"
+//typedef struct menu_pane_vtbl menu_pane_vtbl;
 typedef struct menu_pane menu_pane;
-struct menu_pane_vtbl {
-    void (*draw)(menu_pane const *this);
-    void (*update_cursor)(menu_pane const *this);
-};
+typedef struct menu_pane_vtbl {
+    void (*draw)(menu_pane *this);
+    void (*update_cursor)(menu_pane *this);
+} menu_pane_vtbl;
 struct menu_pane {
     base_pane base;
-    dDlst_base_c dDlst_base;  //inherit dDlst_base_c
+    menu_ddlst menu_ddlst_item;  //inherit dDlst_base_c
     bool active;
     J2DScreen screen;
     screen_capture capture;
     base_pane *sub_panes[6]; //TODO define size
 };
-void menu_pane___new(menu_pane *this, JKRArchive *menuArc);
-void menu_pane_draw(menu_pane const *this);
-void menu_pane_update_cursor(menu_pane const *this);
-void menu_pane__update_dDlst(menu_pane const *this);
+menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc);
+void menu_pane_draw(menu_pane *this);
+void menu_pane_close(menu_pane *this);
+void menu_pane_update_cursor(menu_pane *this);
+void menu_pane__update_dDlst(menu_pane *this);
 #endif

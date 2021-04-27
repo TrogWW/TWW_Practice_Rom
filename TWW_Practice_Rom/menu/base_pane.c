@@ -1,4 +1,6 @@
 // base_pane.c - Base class for menus implementation
+#ifndef BASE_PANE_C_INCLUDED
+#define BASE_PANE_C_INCLUDED
 #include "../menu/base_pane.h"
 
 static base_pane_vtbl base_pane____vt = {
@@ -15,9 +17,10 @@ void base_pane___new(base_pane *this){
     this->width = 0.0f;
 }
 
-void base_pane_draw(base_pane const *this){
+void base_pane_draw(base_pane *this){
     //insert logic here
 }
-void base_pane_update_cursor(base_pane const *this, JUTGamePad* input){
+void base_pane_update_cursor(base_pane *this){
     //insert logic here
 }
+#endif
