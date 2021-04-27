@@ -22,7 +22,7 @@ typedef struct menu_pane_vtbl {
 } menu_pane_vtbl;
 struct menu_pane {
     base_pane base;
-    menu_ddlst menu_ddlst_item;  //inherit dDlst_base_c
+    menu_ddlst menu_ddlst_item;  //object that will inherit dDlst_base_c
     bool active;
     J2DScreen screen;
     screen_capture capture;

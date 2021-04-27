@@ -49,8 +49,10 @@ DigitalInput DIGITAL_INPUTS[12] = {
     { .input = B_PRESSED },
     { .input = START_PRESSED }
 };
-bool Is_Pressed_Not_Held(DigitalInput *this){
-    if(this->pressed == true && this->held == false){
+bool Two_Inputs_Pressed(DigitalInput *input1, DigitalInput *input2){
+    if(input1->pressed && input2->pressed || 
+               input1->held && input2->pressed ||
+               input1->pressed && input2->held){
         return true;
     }
     else{

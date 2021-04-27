@@ -18,14 +18,6 @@ static menu_pane_vtbl menu_pane____vt = {
     menu_pane_draw,
     menu_pane_update_cursor
 };
-/*
-sub_pane_vertical warp_menu = {};
-sub_pane_vertical cheats_menu ={};
-sub_pane_vertical flags_menu ={};
-sub_pane_vertical watches_menu = {};
-sub_pane_vertical debug_menu = {};
-sub_pane_vertical settings_menu = {};
-*/
 
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     if(this == 0){
@@ -59,7 +51,7 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     this->base.xAxisOffset = 65.0f;
     this->base.yAxisOffset = 80.0f;
     this->base.width = 100.0f;
-    //float yPadding = 40.0f;
+
     this->sub_panes[0] = sub_pane_vertical__new(this->sub_panes[0], this, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
     this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, 10.0f, 40.0f, "Cheats", &TEXT_PALLETE_GREY, 0);
     this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, 10.0f, 80.0f, "Flags", &TEXT_PALLETE_GREY, 0);
@@ -70,7 +62,6 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
     screen_capture___new(&this->capture);
     menu_ddlst___new(&this->menu_ddlst_item, this);
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: sub_panes[0] pointer = %d, sub_panes[0] title address = %d\n",this->sub_panes[0], &this->sub_panes[0]->title));
     return this;
 }
 
@@ -108,21 +99,20 @@ void menu_pane_close(menu_pane *this){
 }
 
 void menu_pane_update_cursor(menu_pane *this){
-    //insert logic here
     if(this->base.cursor_active){
-        if(Is_Pressed_Not_Held(&DIGITAL_INPUTS[D_PAD_UP])){
+        if(DIGITAL_INPUTS[D_PAD_UP].pressed){
             this->base.cursor = this->base.cursor - 1;
             if(this->base.cursor < 0){
                 this->base.cursor = 5; //screen wrap cursor
             }
         }
-        else if(Is_Pressed_Not_Held(&DIGITAL_INPUTS[D_PAD_DOWN])){
+        else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
             this->base.cursor = this->base.cursor + 1;
             if(this->base.cursor >= 6){
                 this->base.cursor = 0;
             }
         }
-        else if(Is_Pressed_Not_Held(&DIGITAL_INPUTS[D_PAD_RIGHT])){
+        else if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed){
             this->base.cursor_active = false;
         }
     }
@@ -133,7 +123,7 @@ void menu_pane_update_cursor(menu_pane *this){
 }
 
 void menu_pane__update_dDlst(menu_pane *this){
-    d_meter__dMenu_flagSet(1);  //this is a flag the menu code checks to see if it should render screen capture. also pauses teh game
+    d_meter__dMenu_flagSet(1);  //this is a flag the menu code checks to see if it should render screen capture. also pauses the game
     if(d_menu_window__dMs_capture_c == 0){
         //this is a pointer to a screen capture object.
         //set this value to our screen capture

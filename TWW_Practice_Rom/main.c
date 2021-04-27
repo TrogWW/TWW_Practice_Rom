@@ -12,12 +12,14 @@
 
 void _main_loop(){
     Update_Digital_Inputs();
-    _menu_exec(&settings);
-
+    //_menu_exec(&settings);
+    if(frame_advance.enabled == false){
+        _menu_exec(&settings);
+    }
     if(settings.frame_advance_enabled){
         _frame_advance_exec(&settings);
     }
     else{
-        _menu_exec(&settings);
+        _frame_advance_advance_frame();
     }
 }

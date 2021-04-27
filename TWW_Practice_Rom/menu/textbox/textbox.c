@@ -13,7 +13,6 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
     }
     this->parent = parent;
 
-    //JUTResFont* resFont = mDoExt_resfont0;
     TBox2__float__ rect = {
         .mTL.x = 0.0f,
         .mTL.y = 0.0f,
@@ -26,12 +25,6 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
     }
     this->font = this->textbox.mpFont;
     this->text = this->textbox.mpStringPtr;
-    OSReport(MSL_C_PPCEABI_bare_H__printf("GzTextBox__new: pointer = %d | font = %d | this_text = %s | textbox_text = %s\n",this,this->font, this->text, this->textbox.mpStringPtr));
-    //J2DTextBox__setString(&this->textbox, text);
-    //J2DTextBox__J2DTextBox(J2DTextBox * this, char * param_1, char * param_2);
-
-
-    //J2DTextBox__initiate(&this->textbox, resFont, text, 0,0);
 
     GzTextBox__setRelative_xAxisOffset(this, xAxisOffset);
     GzTextBox__setRelative_yAxisOffset(this, yAxisOffset); 
@@ -55,11 +48,6 @@ void GzTextBox__draw(GzTextBox* this){
     this->textbox.field_0xf4 = (_GXColor)*this->pallete->textColor;
     this->textbox.field_0xf8 = (_GXColor)*this->pallete->textBackgroundColor;
 
-/*   float xAxisOffset;
-    float yAxisOffset;
-    float width;*/
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("GzTextBox__draw: textbox_text = %s | xAxisOffset = %f | yAxisOffset = %f | width = %f\n",this->textbox.mpStringPtr, this->xAxisOffset, this->yAxisOffset, this->width));
-    //J2DTextBox__setFont(&this->textbox, this->font);
     J2DTextBox__draw(&this->textbox,this->xAxisOffset,this->yAxisOffset,this->width,2); //2 = hbinding left
 }
 

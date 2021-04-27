@@ -26,14 +26,11 @@ void _menu_exec(Settings* settings){
     }
     if(load_menu_ctx.mMenuResArc != 0){
         if(main_pane.base.vptr == 0){
-            OSReport(MSL_C_PPCEABI_bare_H__printf("_menu_exec: load_menu_ctx.mMenuResArc pointer = %d\n",load_menu_ctx.mMenuResArc));
             menu_pane___new(&main_pane, load_menu_ctx.mMenuResArc);
         }
         if(main_pane.active == false){
-            if(DIGITAL_INPUTS[X].pressed && DIGITAL_INPUTS[D_PAD_LEFT].pressed || 
-               DIGITAL_INPUTS[X].held && DIGITAL_INPUTS[D_PAD_LEFT].pressed ||
-               DIGITAL_INPUTS[X].pressed && DIGITAL_INPUTS[D_PAD_LEFT].held){
-                main_pane.active = true;
+            if(Two_Inputs_Pressed(&DIGITAL_INPUTS[X], &DIGITAL_INPUTS[D_PAD_LEFT])){
+                main_pane.active = true;  
             }
         }
         else{

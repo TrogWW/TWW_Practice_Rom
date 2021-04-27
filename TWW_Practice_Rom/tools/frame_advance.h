@@ -10,6 +10,7 @@
         #include _WW_FUNCTIONS_H
     #endif
 #pragma endregion _input_defines
+#include "../input.h"
 #include "../settings.h"
 
 void _frame_advance_advance_frame(){
@@ -28,7 +29,7 @@ Frame_Advance frame_advance = {
 };
 
 void _frame_advance_exec(Settings* settings){
-    if(DIGITAL_INPUTS[Z].pressed && DIGITAL_INPUTS[D_PAD_LEFT].pressed){
+    if(Two_Inputs_Pressed(&DIGITAL_INPUTS[Z],&DIGITAL_INPUTS[D_PAD_LEFT])){
         if(frame_advance.enabled == true){
             frame_advance.enabled = false;
         }
@@ -39,14 +40,8 @@ void _frame_advance_exec(Settings* settings){
     }
     if(frame_advance.enabled == true){
         if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
-            if(frame_advance.advanceFrame == true){
-                /*JUTGamePad__read(0);*/        /*This does not work...need a way to buffer digital inputs*/
-                _frame_advance_advance_frame();
-                frame_advance.advanceFrame = false;
-            }
-        }
-        else{
-            frame_advance.advanceFrame = true;
+            /*JUTGamePad__read(0);*/        /*This does not work...need a way to buffer digital inputs*/
+            _frame_advance_advance_frame();
         }
     }
     else{

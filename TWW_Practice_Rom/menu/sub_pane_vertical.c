@@ -10,11 +10,12 @@ static sub_pane_vertical_vtbl sub_pane_vertical____vt = {
 
 
 void sub_pane_vertical_draw(sub_pane_vertical *this){
-
+    /*TO DO*/
 }
 void sub_pane_vertical_update_cursor(sub_pane_vertical *this){
-
+    /*TO DO*/
 }
+
 sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* titleText, text_color_pallete *pallete, JUTFont *font){
     if(this == 0){
         this = (sub_pane_vertical*)JKernel__operator_new(sizeof(sub_pane_vertical));

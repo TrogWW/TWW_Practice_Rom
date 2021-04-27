@@ -5,13 +5,11 @@
 
 PhaseState load_menu(load_menu_context *this){
     if (mDoExt_font0 == (JUTFont *)0x0) {
-        //OSReport("gzMenu: Font not loaded");
         return 0;
     }
     PhaseState phaseState = dComIfG_resLoad(&this->mPhaseRequest, RES_NAME);
     if (phaseState != cPhs_COMPLEATE_e) {
         // Not finished loading yet, check again next frame.
-        //OSReport("gzMenu: Res not loaded");
         return phaseState;
     }
 
