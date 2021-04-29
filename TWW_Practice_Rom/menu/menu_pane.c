@@ -8,12 +8,14 @@
 #include "textbox/textbox.c"
 #include "menu_ddlst.c"
 #include "screen_capture.c"
+#include "warp_pane.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
 //#define WARP_TEXT 0x726f6f74
 
+#define MAIN_TEXT 0x4D41494E
 #define WPMN_TEXT 0x57504D4E
 #define CHTS_TEXT 0x43485453
 #define FLGS_TEXT 0x464c4753
@@ -28,6 +30,27 @@ static menu_pane_vtbl menu_pane____vt = {
 };
 
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
+    //stage_scls_info_class *sceneList =  (stage_scls_info_class *)getSceneList(0);
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: sceneList= %d\n",sceneList));
+
+    //dStage__ObjectNameTable * d_stage__dStage_searchName(char * pName);
+
+    //    dRes_info_c* mStageInfo = g_dComIfG_gameInfo.mResCtrl.mStageInfo;
+    //    dRes_info_c* resInfo = dRes_control_c__getResInfo(RES_NAME, mStageInfo, 0x40);
+    //    dRes_control_c__getRes("Stage", "stage.dzs", resInfo, 0x40);
+
+
+    //d_stage::dStage_infoCreate(void) is also promising
+    //    dRes_control_c::getRes("Stage","stage.dzs",d_com_inf_game::g_dComIfG_gameInfo.mResCtrl.mStageInfo,0x40);
+
+
+    //itemicon.arc = item images
+    //itemres.arc = check_00.bti = square selector
+    //clctres.arc = other menu images (like triforce background)
+    //menures.arc = other useful images (like hearts)
+    //irmap.arc = ir_num_cross = X inside checkbox? + cool stuff like ir_cloth_piece01 for background
+
+
     if(this == 0){
         this = (menu_pane*)JKernel__operator_new(sizeof(menu_pane));
     }
@@ -57,11 +80,15 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
 
     //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: this->secondary_window = %d\n",this->secondary_window));
+
+    J2DPane* main_window = (J2DPane*)J2DScreen__search(&this->screen, MAIN_TEXT);
+    this->base.pane = main_window;
+
     this->active = false;
     this->base.cursor_active = true;
-    this->base.xAxisOffset = 65.0f;
-    this->base.yAxisOffset = 80.0f;
-    this->base.width = 100.0f;
+    //this->base.xAxisOffset = 65.0f;
+    //this->base.yAxisOffset = 80.0f;
+    //this->base.width = 100.0f;
 
     J2DPane* warp_window = (J2DPane*)J2DScreen__search(&this->screen, WPMN_TEXT);
     J2DPane* cheats_window = (J2DPane*)J2DScreen__search(&this->screen, CHTS_TEXT);
@@ -69,13 +96,23 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     J2DPane* watches_window = (J2DPane*)J2DScreen__search(&this->screen, WTCH_TEXT);
     J2DPane* debug_window = (J2DPane*)J2DScreen__search(&this->screen, DEBG_TEXT);
     J2DPane* settings_window = (J2DPane*)J2DScreen__search(&this->screen, STNG_TEXT);
+    
+    float xPadding = 10.0f;
+    float yPadding = 10.0f;
+    float height = base_pane_height(&this->base);
+    
+    height = height - (2 * yPadding);
+    
+    float yOffset = height / 6.0f;
 
-    this->sub_panes[0] = sub_pane_vertical__new(this->sub_panes[0], this, warp_window, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, 10.0f, 40.0f, "Cheats", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, 10.0f, 80.0f, "Flags", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, 10.0f, 120.0f, "Watches", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, 10.0f, 160.0f, "Debug", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, 10.0f, 200.0f, "Settings", &TEXT_PALLETE_GREY, 0);
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: height = %f | yOffset = %f\n",height, yOffset));
+
+    this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
+    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, xPadding, yPadding + (yOffset * 1), "Cheats", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, xPadding, yPadding + (yOffset * 2), "Flags", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, xPadding, yPadding + (yOffset * 3), "Watches", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, xPadding, yPadding + (yOffset * 4), "Debug", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, xPadding, yPadding + (yOffset * 5), "Settings", &TEXT_PALLETE_GREY, 0);
 
 
     screen_capture___new(&this->capture);

@@ -21,6 +21,5 @@ sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *pa
 void sub_pane_vertical_draw(sub_pane_vertical *this);
 void sub_pane_vertical_hide(sub_pane_vertical *this);
 void sub_pane_vertical_update_cursor(sub_pane_vertical *this);
-void sub_pane_setRelative_xAxisOffset(sub_pane_vertical *this, float xAxisOffset);
-void sub_pane_setRelative_yAxisOffset(sub_pane_vertical *this, float xAxisOffset);
+
 #endif

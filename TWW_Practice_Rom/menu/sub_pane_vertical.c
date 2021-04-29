@@ -1,7 +1,9 @@
 //sub_pane_vertical.c implementation
 #ifndef SUB_PANE_VERTICAL_C_INCLUDED
 #define SUB_PANE_VERTICAL_C_INCLUDED
-#include "../menu/sub_pane_vertical.h"
+
+#include "sub_pane_vertical.h"
+#include "base_pane.c"
 #include "textbox/textbox.c"
 static sub_pane_vertical_vtbl sub_pane_vertical____vt = {
     sub_pane_vertical_draw,
@@ -12,10 +14,10 @@ static sub_pane_vertical_vtbl sub_pane_vertical____vt = {
 
 void sub_pane_vertical_draw(sub_pane_vertical *this){
     /*TO DO*/
-    this->pane->mbDraw = true;
+    this->base.pane->mbDraw = true;
 }
 void sub_pane_vertical_hide(sub_pane_vertical *this){
-    this->pane->mbDraw = false;
+    this->base.pane->mbDraw = false;
 }
 void sub_pane_vertical_update_cursor(sub_pane_vertical *this){
     /*TO DO*/
@@ -32,19 +34,11 @@ sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *pa
     base_pane___new(&this->base);
     this->base.vptr = (base_pane_vtbl *)&sub_pane_vertical____vt;
     this->parent = parent;
-    this->base.width = this->parent->width;
-    this->pane = pane;
-    sub_pane_setRelative_xAxisOffset(this, xAxisOffset);
-    sub_pane_setRelative_yAxisOffset(this, yAxisOffset);
+    this->base.pane = pane;
 
-    GzTextBox__new(&this->base.title, this, 0.0f, 0.0f, titleText, pallete, font);
+    base_pane_set_title(&this->base, this->parent, xAxisOffset, yAxisOffset, titleText, &TEXT_PALLETE_GREY, 0);
+    //GzTextBox__new(&this->base.title, this, 0.0f, 0.0f, titleText, pallete, font);
     return this;
 }
 
-void sub_pane_setRelative_xAxisOffset(sub_pane_vertical *this, float xAxisOffset){
-    this->base.xAxisOffset = this->parent->xAxisOffset + xAxisOffset;
-}
-void sub_pane_setRelative_yAxisOffset(sub_pane_vertical *this, float yAxisOffset){
-    this->base.yAxisOffset = this->parent->yAxisOffset + yAxisOffset;
-}
 #endif

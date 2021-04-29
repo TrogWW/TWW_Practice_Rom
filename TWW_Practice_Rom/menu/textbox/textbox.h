@@ -30,8 +30,8 @@ typedef struct GzTextBox {
 
 void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* text, text_color_pallete *pallete, JUTResFont *font);
 void GzTextBox__draw(GzTextBox* this);
-void GzTextBox__setRelative_xAxisOffset(GzTextBox *this, float xAxisOffset);
-void GzTextBox__setRelative_yAxisOffset(GzTextBox *this, float xAxisOffset);
+void GzTextBox__setAbsoluteX(GzTextBox *this, float xAxisOffset);
+void GzTextBox__setAbsoluteY(GzTextBox *this, float xAxisOffset);
 void GzTextBox__changeTextColorInt(_GXColor* color, int value);
 void GzTextBox__changeTextColorPercentage(_GXColor* color, float amount);
 

@@ -29,10 +29,9 @@ struct menu_pane {
     screen_capture capture;
     base_pane *sub_panes[6]; //TODO define size
 };
-menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc);
+menu_pane *menu_pane___new(menu_pane *this, JKRArchive *menuArc);
 void menu_pane_draw(menu_pane *this);
 void menu_pane_hide(menu_pane *this);
-void menu_pane_close(menu_pane *this);
 void menu_pane_update_cursor(menu_pane *this);
 void menu_pane__update_dDlst(menu_pane *this);
 #endif

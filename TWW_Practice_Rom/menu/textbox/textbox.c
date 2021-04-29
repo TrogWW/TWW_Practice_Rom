@@ -1,6 +1,7 @@
 #ifndef TEXTBOX_C_INCLUDED
 #define TEXTBOX_C_INCLUDED
 #include "textbox.h"
+#include "../base_pane.c"
 #include "../../helpers/hexhelpers.c" //used for nthByte
 
 void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* text, text_color_pallete *pallete, JUTResFont *font){
@@ -26,12 +27,10 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
     this->font = this->textbox.mpFont;
     this->text = this->textbox.mpStringPtr;
 
-    GzTextBox__setRelative_xAxisOffset(this, xAxisOffset);
-    GzTextBox__setRelative_yAxisOffset(this, yAxisOffset); 
+    GzTextBox__setAbsoluteX(this, xAxisOffset);
+    GzTextBox__setAbsoluteY(this, yAxisOffset); 
 
-    this->width = this->parent->width;
-
-
+    this->width = base_pane_width(this->parent);
     this->pallete = pallete;
     if(this->pallete = 0){ 
         this->pallete = &TEXT_PALLETE_GREY; //default pallete
@@ -51,11 +50,11 @@ void GzTextBox__draw(GzTextBox* this){
     J2DTextBox__draw(&this->textbox,this->xAxisOffset,this->yAxisOffset,this->width,2); //2 = hbinding left
 }
 
-void GzTextBox__setRelative_xAxisOffset(GzTextBox *this, float xAxisOffset){
-    this->xAxisOffset = this->parent->xAxisOffset + xAxisOffset;   
+void GzTextBox__setAbsoluteX(GzTextBox *this, float xAxisOffset){
+    this->xAxisOffset = base_pane_xOffset(this->parent, xAxisOffset);  
 }
-void GzTextBox__setRelative_yAxisOffset(GzTextBox *this, float yAxisOffset){
-    this->yAxisOffset = this->parent->yAxisOffset + yAxisOffset;
+void GzTextBox__setAbsoluteY(GzTextBox *this, float yAxisOffset){
+    this->yAxisOffset = base_pane_yOffset(this->parent, yAxisOffset);  
 }
 
 void GzTextBox__changeTextColorInt(_GXColor* color, int value){
