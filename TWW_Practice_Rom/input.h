@@ -29,25 +29,30 @@
 # define Y_PRESSED (1 << 11)
 # define START_PRESSED (1 << 12)
 
+#include "memory.h"
+
 typedef struct DigitalInput {
     int input;
     bool pressed;
     bool held;
+    bool long_held;
+    int hold_count;
+    short cpadInfo;
 } DigitalInput;
 
 DigitalInput DIGITAL_INPUTS[12] = {
-    { .input = D_PAD_LEFT_PRESSED },
-    { .input = D_PAD_RIGHT_PRESSED },
-    { .input = D_PAD_DOWN_PRESSED },
-    { .input = D_PAD_UP_PRESSED },
-    { .input = Z_PRESSED },
-    { .input = R_PRESSED },
-    { .input = L_PRESSED },
-    { .input = X_PRESSED },
-    { .input = Y_PRESSED },
-    { .input = A_PRESSED },
-    { .input = B_PRESSED },
-    { .input = START_PRESSED }
+    { .input = D_PAD_LEFT_PRESSED, .cpadInfo = 0x8000 },
+    { .input = D_PAD_RIGHT_PRESSED, .cpadInfo = 0x6000 },
+    { .input = D_PAD_DOWN_PRESSED, .cpadInfo = 0x0000 }, //0x2000 - set to 0 so we don't buffer d pad down
+    { .input = D_PAD_UP_PRESSED, .cpadInfo = 0x1000 },
+    { .input = Z_PRESSED, .cpadInfo = 0x0800 },
+    { .input = R_PRESSED, .cpadInfo = 0x0400 },
+    { .input = L_PRESSED, .cpadInfo = 0x0200 },
+    { .input = X_PRESSED, .cpadInfo = 0x0040 },
+    { .input = Y_PRESSED, .cpadInfo = 0x0020 },
+    { .input = A_PRESSED, .cpadInfo = 0x0100 },
+    { .input = B_PRESSED, .cpadInfo = 0x0080 },
+    { .input = START_PRESSED, .cpadInfo = 0x0010 }
 };
 bool Two_Inputs_Pressed(DigitalInput *input1, DigitalInput *input2){
     if(input1->pressed && input2->pressed || 
@@ -59,11 +64,14 @@ bool Two_Inputs_Pressed(DigitalInput *input1, DigitalInput *input2){
         return false;
     }
 }
+
 void Update_Digital_Input(DigitalInput *this, int currentInput){
     int result = (int)(this->input & currentInput);
     if(result != this->input){
         this->held = false;
         this->pressed = false;
+        this->long_held = false;
+        this->hold_count = 0;
     }
     else{
         if(this->pressed){
@@ -73,14 +81,37 @@ void Update_Digital_Input(DigitalInput *this, int currentInput){
         else if(this->held == false){
             this->pressed = true;
             this->held = false;
+            this->long_held = false;
+            this->hold_count = 0;
         }
     }
+    if(this->held == true){
+        this->hold_count = this->hold_count + 1;
+    }
+    if(this->hold_count >= 15){
+        this->long_held = true;
+    }
+    else{
+        this->long_held = false;
+    }
+}
+void Input_CButton(){
+    short new_input = 0;
+    for(int i = 0; i < 12; i++){
+        if(DIGITAL_INPUTS[i].pressed || DIGITAL_INPUTS[i].held){  
+            new_input = new_input | DIGITAL_INPUTS[i].cpadInfo;
+            //OSReport(MSL_C_PPCEABI_bare_H__printf("Input_CButton: DIGITAL_INPUTS[%d] has been pressed: new_input = %d\n",i,new_input));
+        }
+    }
+    short * cpadInfo = CPADINFO_PTR;
+    *cpadInfo = new_input;
 }
 void Update_Digital_Inputs(){
     m_Do_controller_pad__mDoCPd_Read();
     JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
     CButton* mButton = (CButton*)&gamePad->mButton;
-    int currentInput = (int)mButton->field_0x0 & 0x0000FFFF;
+    int currentInput = (int)mButton->mDigitalInputBitField;
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("Update_Digital_Inputs: mDigitalInputBitField = %X\n",&mButton->mDigitalInputBitField));
     for(int i = 0; i < 12; i++){
         Update_Digital_Input(&DIGITAL_INPUTS[i], currentInput);
     }

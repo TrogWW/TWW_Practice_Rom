@@ -22,20 +22,30 @@ struct base_pane {
     base_pane_vtbl *vptr;
     int cursor;             //cursor location
     bool cursor_active;     //whether or not cursor for this pane is manipulatable             
-    float xAxisOffset;
-    float yAxisOffset;
-    float width;
+    //float xAxisOffset;
+    //float yAxisOffset;
+    //float width;
     GzTextBox title;        //textbox title
+    J2DWindow *pane;
 };
 struct base_pane_vtbl {
     void (*draw)(base_pane *this);
     void (*hide)(base_pane *this);
     void (*update_cursor)(base_pane *this);
+    void (*open)(base_pane *this);
+    void (*close)(base_pane *this);
 };
 
 void base_pane___new(base_pane *this);
-void base_pane_draw(base_pane *this);
-void base_pane_hide(base_pane *this);
-void base_pane_update_cursor(base_pane *this);
+void base_pane__draw(base_pane *this);
+void base_pane__hide(base_pane *this);
+void base_pane__update_cursor(base_pane *this);
+void base_pane__open(base_pane *this);
+void base_pane__close(base_pane *this);
+
+void base_pane_set_title(base_pane *this, base_pane *relative_pane, float relativeX, float relativeY, char *titleText, text_color_pallete *pallete, JUTResFont *font);
+float base_pane_xOffset(base_pane *this, float xOffset);
+float base_pane_yOffset(base_pane *this, float yOffset);
+float base_pane_width(base_pane *this);
 
 #endif
