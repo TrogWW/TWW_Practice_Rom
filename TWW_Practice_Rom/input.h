@@ -33,6 +33,8 @@ typedef struct DigitalInput {
     int input;
     bool pressed;
     bool held;
+    bool long_held;
+    int hold_count;
 } DigitalInput;
 
 DigitalInput DIGITAL_INPUTS[12] = {
@@ -64,6 +66,8 @@ void Update_Digital_Input(DigitalInput *this, int currentInput){
     if(result != this->input){
         this->held = false;
         this->pressed = false;
+        this->long_held = false;
+        this->hold_count = 0;
     }
     else{
         if(this->pressed){
@@ -73,7 +77,18 @@ void Update_Digital_Input(DigitalInput *this, int currentInput){
         else if(this->held == false){
             this->pressed = true;
             this->held = false;
+            this->long_held = false;
+            this->hold_count = 0;
         }
+    }
+    if(this->held == true){
+        this->hold_count = this->hold_count + 1;
+    }
+    if(this->hold_count >= 15){
+        this->long_held = true;
+    }
+    else{
+        this->long_held = false;
     }
 }
 void Update_Digital_Inputs(){

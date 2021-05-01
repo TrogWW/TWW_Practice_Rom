@@ -20,10 +20,18 @@ typedef struct text_color_pallete {
 } text_color_pallete;
 
 _GXColor COLOR_WHITE = {  .r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff };
-_GXColor COLOR_GREY = {  .r = 0xb3, .g = 0xb3, .b = 0xb3, .a = 0xff };
+_GXColor COLOR_WHITE_90 = {  .r = 0xe6, .g = 0xe6, .b = 0xe6, .a = 0xff };
+_GXColor COLOR_WHITE_70 = {  .r = 0xb3, .g = 0xb3, .b = 0xb3, .a = 0xff };
+_GXColor COLOR_WHITE_60 = {  .r = 0x99, .g = 0x99, .b = 0x99, .a = 0xff };
 _GXColor COLOR_NONE = { .r = 0x00, .g = 0x00, .b = 0x00, .a = 0x00 };
+_GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x3f };
 
 text_color_pallete TEXT_PALLETE_WHITE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_NONE };
-text_color_pallete TEXT_PALLETE_GREY = { &COLOR_GREY, &COLOR_GREY, &COLOR_GREY, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_WHITE_90 = { &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_WHITE_70 = { &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_WHITE_60 = { &COLOR_WHITE_60, &COLOR_WHITE_60, &COLOR_WHITE_60, &COLOR_NONE };
+
+
+text_color_pallete TEXT_PALLETE_MENU_INACTIVE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_RED };
 
 #endif

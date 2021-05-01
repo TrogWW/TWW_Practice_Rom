@@ -10,7 +10,7 @@ void stage__new(stage *this, char *name){
     //this->stage_name = name;
     JSUPtrList__JSUPtrList(&this->rooms,true);
 }
-void stage_append_room(stage *this, int room_num){
+void stage_append_room(stage *this, char* room_num){
     JSUPtrLink *room_num_item = (JSUPtrLink *)JKernel__operator_new(sizeof(JSUPtrLink));
     JSUPtrLink__JSUPtrLink(room_num_item, room_num);
     JSUPtrList__append(&this->rooms,room_num_item);

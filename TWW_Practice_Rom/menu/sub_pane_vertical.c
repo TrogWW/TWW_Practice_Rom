@@ -36,7 +36,7 @@ sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *pa
     this->parent = parent;
     this->base.pane = pane;
 
-    base_pane_set_title(&this->base, this->parent, xAxisOffset, yAxisOffset, titleText, &TEXT_PALLETE_GREY, 0);
+    base_pane_set_title(&this->base, this->parent, xAxisOffset, yAxisOffset, titleText, &TEXT_PALLETE_WHITE_70, 0);
     //GzTextBox__new(&this->base.title, this, 0.0f, 0.0f, titleText, pallete, font);
     return this;
 }

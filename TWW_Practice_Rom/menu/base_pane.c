@@ -33,6 +33,9 @@ void base_pane_set_title(base_pane *this, base_pane *relative_pane, float relati
 }
 
 /*
+struct MTX34 {
+    float m[3][4]; // 0x30 bytes
+};
 struct TBox2__float__ {
     struct cXy mTL; // 0x08 bytes
     struct cXy mBR; // 0x08 bytes
@@ -43,18 +46,33 @@ struct cXy {
 };
 */
 float base_pane_xOffset(base_pane *this, float xOffset){
-    return this->pane->mPosTL.x + xOffset; 
+    int offset = (int)this->pane + 224;
+    
+    float xPadding = this->pane->mMtx.m[0][3];
+    TBox2__float__ *winBoxPos = (TBox2__float__ *)(offset);
+
+    
+    return xPadding + winBoxPos->mTL.x + xOffset; 
 }
 float base_pane_yOffset(base_pane *this, float yOffset){
-    return this->pane->mPosTL.y + yOffset; 
+    int offset = (int)this->pane + 224;
+    TBox2__float__ *winBoxPos = (TBox2__float__ *)(offset);
+
+    float yPadding = this->pane->mMtx.m[1][3];
+    return yPadding + winBoxPos->mTL.y + yOffset; 
 }
 float base_pane_width(base_pane *this){
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (width): this->pane->mPosBR.x = %f | this->pane->mPosTL.x = %f\n",this->pane->mPosBR.x, this->pane->mPosTL.x));
-    return this->pane->mPosBR.x - this->pane->mPosTL.x;
+    int offset = (int)this->pane + 224;
+    TBox2__float__ *winBoxPos = (TBox2__float__ *)(offset);
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane_width: this->pane = %X | this->pane + 0xE0 = %X\n",this->pane, winBoxPos));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (width): this->pane->mBR.x = %f | this->pane->mTL.x = %f\n",this->pane->mBR.x, this->pane->mTL.x));
+    return winBoxPos->mBR.x - winBoxPos->mTL.x;
 }
 float base_pane_height(base_pane *this){
-    OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (height): this->pane->mPosBR.y = %f | this->pane->mPosTL.y = %f\n",this->pane->mPosBR.y, this->pane->mPosTL.y));
-    return this->pane->mPosBR.y - this->pane->mPosTL.y;
+    int offset = (int)this->pane + 224;
+    TBox2__float__ *winBoxPos = (TBox2__float__ *)(offset);
+    OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (height): this->pane->mBR.y = %f | this->pane->mTL.y = %f\n",winBoxPos->mBR.y, winBoxPos->mTL.y));
+    return winBoxPos->mBR.y - winBoxPos->mTL.y;
 }
 
 #endif

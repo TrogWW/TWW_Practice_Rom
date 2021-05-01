@@ -30,6 +30,9 @@ static menu_pane_vtbl menu_pane____vt = {
 };
 
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: dayofweek= %X\n",&g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek));
+
+    
     //stage_scls_info_class *sceneList =  (stage_scls_info_class *)getSceneList(0);
     //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: sceneList= %d\n",sceneList));
 
@@ -82,13 +85,11 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: this->secondary_window = %d\n",this->secondary_window));
 
     J2DPane* main_window = (J2DPane*)J2DScreen__search(&this->screen, MAIN_TEXT);
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: main_window = %X\n",main_window));
     this->base.pane = main_window;
 
     this->active = false;
     this->base.cursor_active = true;
-    //this->base.xAxisOffset = 65.0f;
-    //this->base.yAxisOffset = 80.0f;
-    //this->base.width = 100.0f;
 
     J2DPane* warp_window = (J2DPane*)J2DScreen__search(&this->screen, WPMN_TEXT);
     J2DPane* cheats_window = (J2DPane*)J2DScreen__search(&this->screen, CHTS_TEXT);
@@ -98,21 +99,19 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     J2DPane* settings_window = (J2DPane*)J2DScreen__search(&this->screen, STNG_TEXT);
     
     float xPadding = 10.0f;
-    float yPadding = 10.0f;
+    float yPadding = 30.0f;
     float height = base_pane_height(&this->base);
-    
-    height = height - (2 * yPadding);
-    
+
     float yOffset = height / 6.0f;
 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: height = %f | yOffset = %f\n",height, yOffset));
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
 
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, xPadding, yPadding + (yOffset * 1), "Cheats", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, xPadding, yPadding + (yOffset * 2), "Flags", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, xPadding, yPadding + (yOffset * 3), "Watches", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, xPadding, yPadding + (yOffset * 4), "Debug", &TEXT_PALLETE_GREY, 0);
-    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, xPadding, yPadding + (yOffset * 5), "Settings", &TEXT_PALLETE_GREY, 0);
+    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, xPadding, yPadding + (yOffset * 1), "Cheats", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, xPadding, yPadding + (yOffset * 2), "Flags", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, xPadding, yPadding + (yOffset * 3), "Watches", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, xPadding, yPadding + (yOffset * 4), "Debug", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, xPadding, yPadding + (yOffset * 5), "Settings", &TEXT_PALLETE_WHITE_70, 0);
 
 
     screen_capture___new(&this->capture);
@@ -132,15 +131,20 @@ void menu_pane_draw(menu_pane *this){
     //draw sub pane titles
     for(int i = 0; i < 6; i++){
         if(this->base.cursor == i){
-            this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE;
+            if(this->base.cursor_active){
+                this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE;
+            }
+            else{
+                this->sub_panes[i]->title.pallete = &TEXT_PALLETE_MENU_INACTIVE;
+            }   
             this->sub_panes[i]->vptr->draw(this->sub_panes[i]);     
         }
         else{
-            this->sub_panes[i]->title.pallete = &TEXT_PALLETE_GREY;
+            this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE_70;
             this->sub_panes[i]->vptr->hide(this->sub_panes[i]);   
         }
         base_pane *sub_pane = this->sub_panes[i];
-        GzTextBox__draw(&sub_pane->title);
+        GzTextBox__draw(&sub_pane->title,2);
     }
     //draw active sub pane
     //base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
@@ -154,6 +158,7 @@ void menu_pane_hide(menu_pane *this){
     d_meter__dMenu_flagSet(0);
     d_meter__dMenu_setMenuStatus(1);
     d_meter__dMenu_setMenuStatusOld();
+    this->active = false;
 }
 
 void menu_pane_update_cursor(menu_pane *this){
@@ -170,8 +175,10 @@ void menu_pane_update_cursor(menu_pane *this){
                 this->base.cursor = 0;
             }
         }
-        else if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed){
+        else if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed || DIGITAL_INPUTS[A].pressed){
             this->base.cursor_active = false;
+            this->sub_panes[this->base.cursor]->cursor = 0; //activate sub pane cursor
+            this->sub_panes[this->base.cursor]->cursor_active = true;
         }
     }
     else{

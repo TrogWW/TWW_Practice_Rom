@@ -10,6 +10,7 @@ void stage_list__new(stage_list *this){
     JSUPtrList__JSUPtrList(&this->stages,true);
 }
 void stage_list__loadFromDVD(stage_list *this){
+
     int directory[5];
     int directory_info[12];
     bool stageDir = (bool)dvd__DVDOpenDir("/res/Stage",&directory);
@@ -46,9 +47,9 @@ void stage_list__loadFromDVD(stage_list *this){
             if(str_starts_with("Room",file_name)){
                 char *room_no = str_extract_int(file_name);
                 if(room_no){
-                    int room_number_int = atoi(room_no);
+                    //int room_number_int = atoi(room_no);
                     //OSReport(MSL_C_PPCEABI_bare_H__printf("VALID_ROOM_NUMBER %s | room_number_int: %d\n", room_no, room_number_int));
-                    stage_append_room(s, room_number_int);
+                    stage_append_room(s, room_no);
                 }    
                 else{
                     //OSReport(MSL_C_PPCEABI_bare_H__printf("INVALID ROOM NUMBER!!\n"));

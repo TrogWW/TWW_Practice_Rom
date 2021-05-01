@@ -7,5 +7,5 @@ typedef struct stage {
 } stage;
 
 void stage__new(stage *this, char *name);
-void stage_append_room(stage *this, int room_num);
+void stage_append_room(stage *this, char *room_num);
 #endif
