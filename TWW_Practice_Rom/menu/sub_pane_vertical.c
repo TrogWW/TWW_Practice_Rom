@@ -6,24 +6,27 @@
 #include "base_pane.c"
 #include "textbox/textbox.c"
 static sub_pane_vertical_vtbl sub_pane_vertical____vt = {
-    sub_pane_vertical_draw,
-    sub_pane_vertical_hide,
-    sub_pane_vertical_update_cursor
+    sub_pane_vertical__draw,
+    sub_pane_vertical__hide,
+    sub_pane_vertical__update_cursor,
+    sub_pane_vertical__open,
+    sub_pane_vertical__close
 };
 
 
-void sub_pane_vertical_draw(sub_pane_vertical *this){
+void sub_pane_vertical__draw(sub_pane_vertical *this){
     /*TO DO*/
-    this->base.pane->mbDraw = true;
+    this->base.pane->parent.mbDraw = true;
 }
-void sub_pane_vertical_hide(sub_pane_vertical *this){
-    this->base.pane->mbDraw = false;
+void sub_pane_vertical__hide(sub_pane_vertical *this){
+    this->base.pane->parent.mbDraw = false;
 }
-void sub_pane_vertical_update_cursor(sub_pane_vertical *this){
+void sub_pane_vertical__update_cursor(sub_pane_vertical *this){
     /*TO DO*/
 }
-
-sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *parent, J2DPane *pane, float xAxisOffset, float yAxisOffset, char* titleText, text_color_pallete *pallete, JUTFont *font){
+void sub_pane_vertical__open(sub_pane_vertical *this){}
+void sub_pane_vertical__close(sub_pane_vertical *this){}
+sub_pane_vertical* sub_pane_vertical__new(sub_pane_vertical *this, base_pane *parent, J2DWindow *pane, float xAxisOffset, float yAxisOffset, char* titleText, text_color_pallete *pallete, JUTFont *font){
     if(this == 0){
         this = (sub_pane_vertical*)JKernel__operator_new(sizeof(sub_pane_vertical));
         if(this == 0){

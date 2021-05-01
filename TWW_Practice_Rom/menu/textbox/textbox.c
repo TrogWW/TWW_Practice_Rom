@@ -48,10 +48,10 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
 
 void GzTextBox__draw(GzTextBox* this, int hbinding){
 
-    this->textbox.field_0xd0 = (_GXColor)*this->pallete->topColorGradiant;
-    this->textbox.field_0xd4 = (_GXColor)*this->pallete->bottomColorGradiant;
-    this->textbox.field_0xf4 = (_GXColor)*this->pallete->textColor;
-    this->textbox.field_0xf8 = (_GXColor)*this->pallete->textBackgroundColor;
+    this->textbox.mColorGradient[0] = (_GXColor)*this->pallete->topColorGradiant;
+    this->textbox.mColorGradient[1] = (_GXColor)*this->pallete->bottomColorGradiant;
+    this->textbox.mTextColor = (_GXColor)*this->pallete->textColor;
+    this->textbox.mTextBgColor = (_GXColor)*this->pallete->textBackgroundColor;
 
     J2DTextBox__setString(&this->textbox, this->text);
     J2DTextBox__draw(&this->textbox,this->xAxisOffset,this->yAxisOffset,this->width,hbinding); //2 = hbinding left

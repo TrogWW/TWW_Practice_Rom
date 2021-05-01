@@ -8,7 +8,7 @@
 #define HOUR_FIELD_IDX 4
 #define WEEK_FIELD_IDX 5
 
-#define SPAWNID_MAX 8
+#define SPAWNID_MAX 255
 #define LAYER_MAX 8
 #define HOUR_MAX 25
 #define WEEK_MAX 7
@@ -24,10 +24,12 @@
 static warp_pane_vtbl warp_pane____vt = {
     warp_pane__draw,
     warp_pane__hide,
-    warp_pane_update__cursor
+    warp_pane_update__cursor,
+    warp_pane__open,
+    warp_pane__close
 };
 
-warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DPane *pane, float relativeX, float relativeY){
+warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY){
     if(this == 0){
         this = (warp_pane*)JKernel__operator_new(sizeof(warp_pane));
     }
@@ -66,7 +68,6 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DPane *pane, flo
     float height = base_pane_height(&this->base);
     float yOffset = height / (WARP_LABEL_COUNT + WARP_FIELD_COUNT);
 
-    //GzTextBox__new(&this->title, relative_pane, relativeX, relativeY, titleText, &TEXT_PALLETE_WHITE, font);
     
     OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: height = %f | yOffset = %f | white_pallete = %X\n",height, yOffset, &TEXT_PALLETE_WHITE));
     OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: base_pane_xOffset = %f | base_pane_yOffset = %f\n",base_pane_xOffset(&this->base,0.0f), base_pane_yOffset(&this->base,0.0f)));
@@ -95,7 +96,7 @@ void warp_pane__draw(warp_pane *this){
     char *current_room = (char *)JSUPtrList__get_index(&current_stage->rooms, this->room_index);
     //int MSL_C_PPCEABI_bare_H__sprintf(char * __s, char * __format, ...);
     
-    char spawn_id_text[2];
+    char spawn_id_text[3];
     char layer_id_text[2];
     char hour_text[3];
     char dayOfWeek_text[2];
@@ -135,10 +136,10 @@ void warp_pane__draw(warp_pane *this){
 
         GzTextBox__draw(&this->fields[i],0);
     }
-    this->base.pane->mbDraw = true;
+    this->base.pane->parent.mbDraw = true;
 }
 void warp_pane__hide(warp_pane *this){
-    this->base.pane->mbDraw = false;
+    this->base.pane->parent.mbDraw = false;
 }
 
 void warp_pane_update__cursor(warp_pane *this){
@@ -160,6 +161,10 @@ void warp_pane_update__cursor(warp_pane *this){
     }
     warp_pane__update_fields(this);
 }
+
+void warp_pane__open(warp_pane *this){}
+void warp_pane__close(warp_pane *this){}
+
 void warp_pane__warp(warp_pane *this){
     char *pStageName = this->fields[MAP_FIELD_IDX].text;
 
@@ -278,8 +283,8 @@ void warp_pane__update_fields(warp_pane *this){
     if(this->layer_id < 0){
         this->layer_id = LAYER_MAX - 1;
     }
-    else if(this->spawn_id >= LAYER_MAX){
-        this->spawn_id = 0;
+    else if(this->layer_id >= LAYER_MAX){
+        this->layer_id = 0;
     }
 
     if(this->hour < 0){

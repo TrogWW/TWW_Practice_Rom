@@ -38,8 +38,8 @@ void _frame_advance_exec(Settings* settings){
         }
     }
     if(frame_advance.enabled == true){
+        Input_CButton(); //buffers inputs from CButton
         if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
-            /*JUTGamePad__read(0);*/        /*This does not work...need a way to buffer digital inputs*/
             _frame_advance_advance_frame();
         }
     }
