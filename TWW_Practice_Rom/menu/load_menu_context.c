@@ -3,12 +3,7 @@
 #include "load_menu_context.h"
 #define RES_NAME "gzmenu"
 
-PhaseState load_menu(load_menu_context *this){
-        //undefined mDoDvdThd_toMainRam_c__create(char * pFilePath, byte direction, JKRHeap * pHeap);
-    //uVar1 = mDoDvdThd_toMainRam_c::create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
-    //int response = mDoDvdThd_toMainRam_c__create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
-
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("stage_list__loadFromDVD: response: %X\n",response));
+PhaseState load_menu(load_menu_context *this){ 
     if (mDoExt_font0 == (JUTFont *)0x0) {
         return 0;
     }
