@@ -8,7 +8,51 @@
   <search-paths>
     <path>resources/</path>
   </search-paths>
-  
+  <pane id="INFO" visible="False">
+    <rectangle>
+		  <x>0</x>
+      <y>0</y>
+      <width>640</width>
+      <height>480</height>
+    </rectangle>
+    <window id="RMID">
+      <rectangle>
+        <x>0</x>
+        <y>0</y>
+        <width>135</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>500</x>
+          <y>200</y>
+          <width>110</width>
+          <height>80</height>
+        </rectangle>
+      </content>
+      
+      <alpha>75</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners>
+    </window>
+  </pane>
   <pane id="ROOT">
     <rectangle>
       <x>0</x>
@@ -136,6 +180,67 @@
 					<color>000000FF</color>
 				</bottom-right>
 			</corners> 
+    </window>
+    <window id="INVN">
+      <rectangle>
+        <x>200</x>
+        <y>45</y>
+        <width>220</width>
+        <height>115</height>
+      </rectangle>
+      
+      <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>395</width>
+          <height>395</height>
+        </rectangle>
+      </content>
+      
+      <alpha>155</alpha>
+            
+      <corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+
+      <picture id="it13">
+
+        <rectangle>
+
+          <x>519</x>
+
+          <y>216</y>
+
+          <width>56</width>
+
+          <height>56</height>
+
+        </rectangle>
+
+        <anchor>CenterMiddle</anchor>
+
+        <binding>Bottom, Top, Right, Left</binding>
+
+        <wrap-s>Clamp</wrap-s>
+
+        <wrap-t>Clamp</wrap-t>
+
+		  </picture>
     </window>
     <window id="CHTS" visible="False">
         <rectangle>

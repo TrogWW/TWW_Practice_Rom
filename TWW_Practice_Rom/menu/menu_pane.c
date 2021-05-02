@@ -17,6 +17,7 @@
 
 #define MAIN_TEXT 0x4D41494E
 #define WPMN_TEXT 0x57504D4E
+#define INVN_TEXT 0x494E564E
 #define CHTS_TEXT 0x43485453
 #define FLGS_TEXT 0x464c4753
 #define WTCH_TEXT 0x57544348
@@ -94,26 +95,29 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     this->base.cursor_active = true;
 
     J2DWindow* warp_window = (J2DWindow*)J2DScreen__search(&this->screen, WPMN_TEXT);
+    J2DWindow* inventory_window = (J2DWindow*)J2DScreen__search(&this->screen, INVN_TEXT);
     J2DWindow* cheats_window = (J2DWindow*)J2DScreen__search(&this->screen, CHTS_TEXT);
     J2DWindow* flags_window = (J2DWindow*)J2DScreen__search(&this->screen, FLGS_TEXT);
     J2DWindow* watches_window = (J2DWindow*)J2DScreen__search(&this->screen, WTCH_TEXT);
     J2DWindow* debug_window = (J2DWindow*)J2DScreen__search(&this->screen, DEBG_TEXT);
     J2DWindow* settings_window = (J2DWindow*)J2DScreen__search(&this->screen, STNG_TEXT);
-    
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: inventory_window = %X\n",inventory_window));
+
     float xPadding = 10.0f;
     float yPadding = 30.0f;
     float height = base_pane_height(&this->base);
 
-    float yOffset = height / 6.0f;
+    float yOffset = height / SUB_PANE_SIZE;
 
     OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
 
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, cheats_window, xPadding, yPadding + (yOffset * 1), "Cheats", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, flags_window, xPadding, yPadding + (yOffset * 2), "Flags", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, watches_window, xPadding, yPadding + (yOffset * 3), "Watches", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, debug_window, xPadding, yPadding + (yOffset * 4), "Debug", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, settings_window, xPadding, yPadding + (yOffset * 5), "Settings", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1), "Inventory", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, cheats_window, xPadding, yPadding + (yOffset * 2), "Cheats", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, flags_window, xPadding, yPadding + (yOffset * 3), "Flags", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4), "Watches", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, debug_window, xPadding, yPadding + (yOffset * 5), "Debug", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[6] = sub_pane_vertical__new(this->sub_panes[6], this, settings_window, xPadding, yPadding + (yOffset * 6), "Settings", &TEXT_PALLETE_WHITE_70, 0);
 
 
     screen_capture___new(&this->capture);
@@ -131,7 +135,7 @@ void menu_pane__draw(menu_pane *this){
 
 
     //draw sub pane titles
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < SUB_PANE_SIZE; i++){
         if(this->base.cursor == i){
 
             if(this->base.cursor_active){
@@ -169,12 +173,12 @@ void menu_pane__update_cursor(menu_pane *this){
         if(DIGITAL_INPUTS[D_PAD_UP].pressed){
             this->base.cursor = this->base.cursor - 1;
             if(this->base.cursor < 0){
-                this->base.cursor = 5; //screen wrap cursor
+                this->base.cursor = SUB_PANE_SIZE - 1; //screen wrap cursor
             }
         }
         else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
             this->base.cursor = this->base.cursor + 1;
-            if(this->base.cursor >= 6){
+            if(this->base.cursor >= SUB_PANE_SIZE){
                 this->base.cursor = 0;
             }
         }
