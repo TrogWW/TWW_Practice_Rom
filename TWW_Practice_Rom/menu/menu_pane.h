@@ -14,6 +14,8 @@
 #include "base_pane.h"
 #include "screen_capture.h"
 #include "menu_ddlst.h"
+
+#define SUB_PANE_SIZE 7
 //typedef struct menu_pane_vtbl menu_pane_vtbl;
 typedef struct menu_pane menu_pane;
 typedef struct menu_pane_vtbl {
@@ -29,7 +31,7 @@ struct menu_pane {
     bool active;
     J2DScreen screen;
     screen_capture capture;
-    base_pane *sub_panes[6]; //TODO define size
+    base_pane *sub_panes[SUB_PANE_SIZE];
 };
 menu_pane *menu_pane___new(menu_pane *this, JKRArchive *menuArc);
 void menu_pane__draw(menu_pane *this);
