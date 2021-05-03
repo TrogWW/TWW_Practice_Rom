@@ -10,7 +10,6 @@ void stage_list__new(stage_list *this){
     JSUPtrList__JSUPtrList(&this->stages,true);
 }
 void stage_list__loadFromDVD(stage_list *this){
-
     int directory[5];
     int directory_info[12];
     bool stageDir = (bool)dvd__DVDOpenDir("/res/Stage",&directory);

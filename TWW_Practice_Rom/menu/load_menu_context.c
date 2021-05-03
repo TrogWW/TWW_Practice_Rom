@@ -4,7 +4,7 @@
 #define RES_NAME "gzmenu"
 
 PhaseState load_menu(load_menu_context *this){ 
-    if (mDoExt_font0 == (JUTFont *)0x0) {
+    if (mDoExt_font0 == (JUTFont *)0x0) { //do not attempt to load until fonts are loaded. Will cause crash otherwise.
         return 0;
     }
     PhaseState phaseState = dComIfG_resLoad(&this->mPhaseRequest, RES_NAME);

@@ -68,27 +68,29 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     float height = base_pane_height(&this->base);
     float yOffset = height / (WARP_LABEL_COUNT + WARP_FIELD_COUNT);
 
+    float label_font_scale = 1.0;
+    float field_font_scale = 0.8;
     
     OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: height = %f | yOffset = %f | white_pallete = %X\n",height, yOffset, &TEXT_PALLETE_WHITE));
     OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: base_pane_xOffset = %f | base_pane_yOffset = %f\n",base_pane_xOffset(&this->base,0.0f), base_pane_yOffset(&this->base,0.0f)));
     
-    GzTextBox__new(&this->labels[0], &this->base, xPadding, yPadding + (yOffset * 0), "Map", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[0], &this->base, xPadding, yPadding + (yOffset * 0.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[0], &this->base, xPadding, yPadding + (yOffset * 0), "Map", &TEXT_PALLETE_WHITE, 0, label_font_scale);
+    GzTextBox__new(&this->fields[0], &this->base, xPadding, yPadding + (yOffset * 0.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[1], &this->base, xPadding, yPadding + (yOffset * 2), "Room", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[1], &this->base, xPadding, yPadding + (yOffset * 2.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[1], &this->base, xPadding, yPadding + (yOffset * 2), "Room", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[1], &this->base, xPadding, yPadding + (yOffset * 2.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[2], &this->base, xPadding, yPadding + (yOffset * 4), "Entrance", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[2], &this->base, xPadding, yPadding + (yOffset * 4.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[2], &this->base, xPadding, yPadding + (yOffset * 4), "Entrance", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[2], &this->base, xPadding, yPadding + (yOffset * 4.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[3], &this->base, xPadding, yPadding + (yOffset * 6), "Layer", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[3], &this->base, xPadding, yPadding + (yOffset * 6.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[3], &this->base, xPadding, yPadding + (yOffset * 6), "Layer", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[3], &this->base, xPadding, yPadding + (yOffset * 6.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[4], &this->base, xPadding, yPadding + (yOffset * 8), "Hour", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[4], &this->base, xPadding, yPadding + (yOffset * 8.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[4], &this->base, xPadding, yPadding + (yOffset * 8), "Hour", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[4], &this->base, xPadding, yPadding + (yOffset * 8.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[5], &this->base, xPadding, yPadding + (yOffset * 10), "Day of Week", &TEXT_PALLETE_WHITE, 0);
-    GzTextBox__new(&this->fields[5], &this->base, xPadding, yPadding + (yOffset * 10.75), "", &TEXT_PALLETE_WHITE_70, 0);
+    GzTextBox__new(&this->labels[5], &this->base, xPadding, yPadding + (yOffset * 10), "Day of Week", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[5], &this->base, xPadding, yPadding + (yOffset * 10.75), "", &TEXT_PALLETE_WHITE_70, 0,field_font_scale);
     return this;
 }
 void warp_pane__draw(warp_pane *this){

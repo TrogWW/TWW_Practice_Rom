@@ -148,17 +148,18 @@ inventory_pane* inventory_pane__new(inventory_pane *this, base_pane *parent, J2D
 
 
     
-    this->picture = (J2DPicture *)J2DPane__search(pane, it13_TEXT);
+    // this->picture = (J2DPicture *)J2DPane__search(pane, it13_TEXT);
 
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new: g_dComIfG_gameInfo.mPlay.mpItemIconArchive = %X\n",g_dComIfG_gameInfo.mPlay.mpItemIconArchive));
-//    int JKRArchive__readTypeResource(void * pDst, ulong size, ulong param_3, char * pFilename, JKRArchive * pArc);
-    JKRArchive__readTypeResource(&this->resImg, 0xC00,TIMG_TEXT,"telescope.bti",g_dComIfG_gameInfo.mPlay.mpItemIconArchive);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new:&this->resImg = %X\n",&this->resImg));
-    //os__DCStoreRange(*(ResTIMG *)resTIMG_ptr, 0xC00);
-    //undefined J2DPicture__changeTexture(J2DPicture * this, ResTIMG * param_1, uchar param_2);
-    J2DPicture__changeTexture(this->picture, &this->resImg, 0);
-    //J2DPicture__changeTexture_1(this->picture, "telescope.bti", 0);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new: this->picture->mpTexture[0] = %X | this->picture->mpTexture[1] = %X\n",this->picture->mpTexture[0], this->picture->mpTexture[1]));
+//     //OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new: g_dComIfG_gameInfo.mPlay.mpItemIconArchive = %X\n",g_dComIfG_gameInfo.mPlay.mpItemIconArchive));
+// //   int JKRArchive__readTypeResource(void * pDst, ulong size, ulong param_3, char * pFilename, JKRArchive * pArc);
+
+//     JKRArchive__readTypeResource(&this->resImg, 0xC00,TIMG_TEXT,"telescope.bti",g_dComIfG_gameInfo.mPlay.mpItemIconArchive);
+//     OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new:&this->resImg = %X\n",&this->resImg));
+//     //os__DCStoreRange(*(ResTIMG *)resTIMG_ptr, 0xC00);
+//     //undefined J2DPicture__changeTexture(J2DPicture * this, ResTIMG * param_1, uchar param_2);
+//     J2DPicture__changeTexture(this->picture, &this->resImg, 0);
+//     //J2DPicture__changeTexture_1(this->picture, "telescope.bti", 0);
+//     OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_pane__new: this->picture->mpTexture[0] = %X | this->picture->mpTexture[1] = %X\n",this->picture->mpTexture[0], this->picture->mpTexture[1]));
     return this;
 }
 void inventory_pane__draw(inventory_pane *this){

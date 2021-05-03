@@ -22,13 +22,14 @@ typedef struct GzTextBox {
     float xAxisOffset;
     float yAxisOffset;
     float width;
+    float font_scale;
     char* text;
     text_color_pallete *pallete;
 } GzTextBox;
 
 
 
-void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* text, text_color_pallete *pallete, JUTResFont *font);
+void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float yAxisOffset, char* text, text_color_pallete *pallete, JUTResFont *font, float font_scale);
 void GzTextBox__draw(GzTextBox* this, int hbinding);
 void GzTextBox__setAbsoluteX(GzTextBox *this, float xAxisOffset);
 void GzTextBox__setAbsoluteY(GzTextBox *this, float xAxisOffset);
