@@ -9,6 +9,7 @@
 #include "menu_ddlst.c"
 #include "screen_capture.c"
 #include "warp_pane.c"
+#include "inventory_pane.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define root_TEXT 0x524f4f54
@@ -112,7 +113,7 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
 
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1), "Inventory", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[1] = inventory_pane__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1));
     this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, cheats_window, xPadding, yPadding + (yOffset * 2), "Cheats", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, flags_window, xPadding, yPadding + (yOffset * 3), "Flags", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4), "Watches", &TEXT_PALLETE_WHITE_70, 0);

@@ -24,7 +24,7 @@
 static warp_pane_vtbl warp_pane____vt = {
     warp_pane__draw,
     warp_pane__hide,
-    warp_pane_update__cursor,
+    warp_pane__update_cursor,
     warp_pane__open,
     warp_pane__close
 };
@@ -142,7 +142,7 @@ void warp_pane__hide(warp_pane *this){
     this->base.pane->parent.mbDraw = false;
 }
 
-void warp_pane_update__cursor(warp_pane *this){
+void warp_pane__update_cursor(warp_pane *this){
     if(DIGITAL_INPUTS[D_PAD_UP].pressed){
         this->base.cursor = this->base.cursor - 1;
         if(this->base.cursor < 0){
