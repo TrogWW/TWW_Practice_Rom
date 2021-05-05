@@ -46,8 +46,8 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
 
 void GzTextBox__draw(GzTextBox* this, int hbinding){
 
-    this->textbox.field_0xe8 = DEFAULT_FONT_WIDTH * this->font_scale;
-    this->textbox.field_0xec = DEFAULT_FONT_HEIGHT * this->font_scale;
+    this->textbox.mFontWidth = DEFAULT_FONT_WIDTH * this->font_scale;
+    this->textbox.mFontHeight = DEFAULT_FONT_HEIGHT * this->font_scale;
 
     this->textbox.mColorGradient[0] = (_GXColor)*this->pallete->topColorGradiant;
     this->textbox.mColorGradient[1] = (_GXColor)*this->pallete->bottomColorGradiant;
