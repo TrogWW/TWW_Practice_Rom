@@ -34,7 +34,7 @@ struct warp_pane {
 warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY);
 void warp_pane__draw(warp_pane *this);
 void warp_pane__hide(warp_pane *this);
-void warp_pane_update__cursor(warp_pane *this);
+void warp_pane__update_cursor(warp_pane *this);
 void warp_pane__open(warp_pane *this);
 void warp_pane__close(warp_pane *this);
 void warp_pane__update_fields(warp_pane *this);

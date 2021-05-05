@@ -9,6 +9,7 @@
 #include "menu_ddlst.c"
 #include "screen_capture.c"
 #include "warp_pane.c"
+#include "inventory_pane.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define root_TEXT 0x524f4f54
@@ -110,9 +111,10 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     float yOffset = height / SUB_PANE_SIZE;
 
     OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
+    
 
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
-    this->sub_panes[1] = sub_pane_vertical__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1), "Inventory", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[1] = inventory_pane__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1));
     this->sub_panes[2] = sub_pane_vertical__new(this->sub_panes[2], this, cheats_window, xPadding, yPadding + (yOffset * 2), "Cheats", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, flags_window, xPadding, yPadding + (yOffset * 3), "Flags", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4), "Watches", &TEXT_PALLETE_WHITE_70, 0);
@@ -130,9 +132,9 @@ void menu_pane__draw(menu_pane *this){
     J2DGrafContext* pCtx = (J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph;
     J2DGrafContext__setPort((J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph);
 
-    //draw pane background
-    J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
+        //draw pane background
+    J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
     //draw sub pane titles
     for(int i = 0; i < SUB_PANE_SIZE; i++){
@@ -153,6 +155,7 @@ void menu_pane__draw(menu_pane *this){
         base_pane *sub_pane = this->sub_panes[i];
         GzTextBox__draw(&sub_pane->title,2);
     }
+
     //draw active sub pane
     //base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
 
@@ -160,6 +163,7 @@ void menu_pane__draw(menu_pane *this){
 }
 
 void menu_pane__hide(menu_pane *this){
+    JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x810, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
     //dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture); // this was causing the values in this->sub_panes to be incorrect?
     d_menu_window__dMs_capture_c = 0;
     d_meter__dMenu_flagSet(0);
@@ -171,18 +175,21 @@ void menu_pane__hide(menu_pane *this){
 void menu_pane__update_cursor(menu_pane *this){
     if(this->base.cursor_active){
         if(DIGITAL_INPUTS[D_PAD_UP].pressed){
+            JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
             this->base.cursor = this->base.cursor - 1;
             if(this->base.cursor < 0){
                 this->base.cursor = SUB_PANE_SIZE - 1; //screen wrap cursor
             }
         }
         else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
+            JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
             this->base.cursor = this->base.cursor + 1;
             if(this->base.cursor >= SUB_PANE_SIZE){
                 this->base.cursor = 0;
             }
         }
         else if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed || DIGITAL_INPUTS[A].pressed){
+            JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
             this->base.cursor_active = false;
             this->sub_panes[this->base.cursor]->cursor = 0; //activate sub pane cursor
             this->sub_panes[this->base.cursor]->cursor_active = true;

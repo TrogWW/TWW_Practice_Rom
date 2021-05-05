@@ -26,6 +26,8 @@ _GXColor COLOR_WHITE_60 = {  .r = 0x99, .g = 0x99, .b = 0x99, .a = 0xff };
 _GXColor COLOR_NONE = { .r = 0x00, .g = 0x00, .b = 0x00, .a = 0x00 };
 _GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x3f };
 
+_GXColor COLOR_ITEM_DISABLED = { .r = 0x26, .g = 0x26, .b = 0x26, .a = 0xAA };
+
 text_color_pallete TEXT_PALLETE_WHITE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_NONE };
 text_color_pallete TEXT_PALLETE_WHITE_90 = { &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_NONE };
 text_color_pallete TEXT_PALLETE_WHITE_70 = { &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_NONE };

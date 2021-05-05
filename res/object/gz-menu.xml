@@ -218,29 +218,7 @@
 				</bottom-right>
 			</corners> 
 
-      <picture id="it13">
-
-        <rectangle>
-
-          <x>519</x>
-
-          <y>216</y>
-
-          <width>56</width>
-
-          <height>56</height>
-
-        </rectangle>
-
-        <anchor>CenterMiddle</anchor>
-
-        <binding>Bottom, Top, Right, Left</binding>
-
-        <wrap-s>Clamp</wrap-s>
-
-        <wrap-t>Clamp</wrap-t>
-
-		  </picture>
+ 
     </window>
     <window id="CHTS" visible="False">
         <rectangle>
@@ -427,5 +405,28 @@
 				</bottom-right>
 			</corners> 
     </window>
-  </pane>
+  </pane>     
+  <picture id="it13">
+
+        <rectangle>
+
+          <x>519</x>
+
+          <y>216</y>
+
+          <width>56</width>
+
+          <height>56</height>
+
+        </rectangle>
+
+        <anchor>CenterMiddle</anchor>
+
+        <binding>Bottom, Top, Right, Left</binding>
+
+        <wrap-s>Clamp</wrap-s>
+
+        <wrap-t>Clamp</wrap-t>
+
+	  </picture>
 </screen>
