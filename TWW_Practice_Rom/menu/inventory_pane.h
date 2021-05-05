@@ -2,6 +2,10 @@
 #define INVENTORYPANE_H_INCLUDED
 
 #include "base_pane.h"
+#include "item/inventory_cursor.h"
+#include "item/inventory_item.h"
+
+#define INVENTORY_SIZE 28
 
 typedef struct inventory_pane inventory_pane;
 typedef struct inventory_pane_vtbl {
@@ -15,8 +19,13 @@ typedef struct inventory_pane_vtbl {
 struct inventory_pane {
     base_pane base;
     base_pane *parent;
-    J2DPicture * picture;
-    ResTIMG resImg;
+    inventory_item inventory[INVENTORY_SIZE];
+    inventory_cursor cursor;
+    //J2DPicture title_collect;
+    J2DPicture arrow; //font_10.bti
+    J2DPicture r_button; //font_05.bti
+    float xSpacing;
+    float ySpacing;
 };
 
 inventory_pane* inventory_pane__new(inventory_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY);

@@ -71,9 +71,6 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     float label_font_scale = 1.0;
     float field_font_scale = 0.8;
     
-    OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: height = %f | yOffset = %f | white_pallete = %X\n",height, yOffset, &TEXT_PALLETE_WHITE));
-    OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__new: base_pane_xOffset = %f | base_pane_yOffset = %f\n",base_pane_xOffset(&this->base,0.0f), base_pane_yOffset(&this->base,0.0f)));
-    
     GzTextBox__new(&this->labels[0], &this->base, xPadding, yPadding + (yOffset * 0), "Map", &TEXT_PALLETE_WHITE, 0, label_font_scale);
     GzTextBox__new(&this->fields[0], &this->base, xPadding, yPadding + (yOffset * 0.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 

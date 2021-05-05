@@ -33,7 +33,7 @@ void base_pane__update_cursor(base_pane *this){
 void base_pane__open(base_pane *this){}
 void base_pane__close(base_pane *this){}
 void base_pane_set_title(base_pane *this, base_pane *relative_pane, float relativeX, float relativeY, char *titleText, text_color_pallete *pallete, JUTResFont *font){
-    GzTextBox__new(&this->title, relative_pane, relativeX, relativeY, titleText, &TEXT_PALLETE_WHITE, font,1.0f);
+    GzTextBox__new(&this->title, relative_pane, relativeX, relativeY, titleText, &TEXT_PALLETE_WHITE, font,1.1f);
 }
 
 /*
