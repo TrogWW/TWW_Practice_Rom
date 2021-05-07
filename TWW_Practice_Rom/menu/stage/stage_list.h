@@ -4,10 +4,8 @@
 #include "stage.h"
 
 typedef struct stage_list{
-    JSUPtrList stages;
+    int stage_count;
+    stage **stages;
 } stage_list;
-void stage_list__new(stage_list *this);
-void stage_list__loadFromDVD(stage_list *this);
-void stage_list__append_stage(stage_list *this, stage *s);
-
+void stage_list__new(stage_list *this, void *data);
 #endif

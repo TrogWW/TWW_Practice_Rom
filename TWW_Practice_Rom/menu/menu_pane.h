@@ -32,12 +32,18 @@ struct menu_pane {
     J2DScreen screen;
     screen_capture capture;
     base_pane *sub_panes[SUB_PANE_SIZE];
+
+    mDoDvdThd_toMainRam_c * menu_dat_thd;
+    request_of_phase_process_class load_menu_dat_request;
 };
 menu_pane *menu_pane___new(menu_pane *this, JKRArchive *menuArc);
+int menu_pane__phase_1(menu_pane *this);
+int menu_phase__phase_2(menu_pane *this);
 void menu_pane__draw(menu_pane *this);
 void menu_pane__hide(menu_pane *this);
 void menu_pane__update_cursor(menu_pane *this);
 void menu_pane__open(menu_pane *this);
+void menu_pane__load_dat(menu_pane *this);
 void menu_pane__close(menu_pane *this);
 void menu_pane__update_dDlst(menu_pane *this);
 #endif

@@ -12,7 +12,7 @@ void inventory_item__new(inventory_item* this, base_pane *parent, float xAxisOff
     this->parent = parent;
     this->pictures = (J2DPicture*)JKernel__operator_new(sizeof(J2DPicture) * picture_count);
     for(int i = 0; i < picture_count; i++){
-        OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_item__new *bti_images[%d] = %s\n",i,bti_images[i]));
+        // OSReport(MSL_C_PPCEABI_bare_H__printf("inventory_item__new *bti_images[%d] = %s\n",i,bti_images[i]));
         J2DPicture__J2DPicture_3(&this->pictures[i], bti_images[i]);
     }
 

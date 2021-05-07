@@ -8,8 +8,8 @@
 #define HOUR_FIELD_IDX 4
 #define WEEK_FIELD_IDX 5
 
-#define SPAWNID_MAX 255
-#define LAYER_MAX 8
+// #define SPAWNID_MAX 255
+#define LAYER_MAX 9
 #define HOUR_MAX 25
 #define WEEK_MAX 7
 
@@ -28,7 +28,9 @@ static warp_pane_vtbl warp_pane____vt = {
     warp_pane__open,
     warp_pane__close
 };
-
+warp_pane__set_stage_data(warp_pane *this, void *data){
+    stage_list__new(&this->warp_list, data);
+}
 warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY){
     if(this == 0){
         this = (warp_pane*)JKernel__operator_new(sizeof(warp_pane));
@@ -41,8 +43,8 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     //base_pane *this, base_pane *relative_pane, float relativeX, float relativeY, char *titleText, text_color_pallete *pallete, JUTResFont *font
     base_pane_set_title(&this->base, this->parent, relativeX, relativeY, "Warp", &TEXT_PALLETE_WHITE, 0);
     
-    stage_list__new(&this->warp_list);
-    stage_list__loadFromDVD(&this->warp_list);
+
+    //stage_list__loadFromDVD(&this->warp_list);
 
     byte stage_index;
     byte room_index;
@@ -91,21 +93,29 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     return this;
 }
 void warp_pane__draw(warp_pane *this){
-    stage *current_stage = (stage *)JSUPtrList__get_index(&this->warp_list.stages, this->stage_index);
-    char *current_room = (char *)JSUPtrList__get_index(&current_stage->rooms, this->room_index);
+    if(this->warp_list.stage_count == 0){
+        return;
+    }
+    //stage *current_stage = (stage *)JSUPtrList__get_index(&this->warp_list.stages, this->stage_index);
+    //char *current_room = (char *)JSUPtrList__get_index(&current_stage->rooms, this->room_index);
     //int MSL_C_PPCEABI_bare_H__sprintf(char * __s, char * __format, ...);
-    
+    stage *current_stage = this->warp_list.stages[this->stage_index];
+    room *current_room = (room *)current_stage->rooms[this->room_index];
+    int room_index = current_room->index;
+    int spawn_index = current_room->spawn_ids[this->spawn_id];
     char spawn_id_text[3];
     char layer_id_text[2];
     char hour_text[3];
     char dayOfWeek_text[2];
-    MSL_C_PPCEABI_bare_H__sprintf(spawn_id_text, "%d",this->spawn_id);
+    char room_index_text[3];
+    MSL_C_PPCEABI_bare_H__sprintf(room_index_text, "%d",room_index);
+    MSL_C_PPCEABI_bare_H__sprintf(spawn_id_text, "%d",spawn_index);
     MSL_C_PPCEABI_bare_H__sprintf(layer_id_text, "%d",this->layer_id);  
     MSL_C_PPCEABI_bare_H__sprintf(hour_text, "%d",this->hour); 
     MSL_C_PPCEABI_bare_H__sprintf(dayOfWeek_text, "%d",this->dayOfWeek); 
 
     this->fields[MAP_FIELD_IDX].text = current_stage->stage_name;
-    this->fields[ROOM_FIELD_IDX].text = current_room;
+    this->fields[ROOM_FIELD_IDX].text = room_index_text;
     this->fields[SPAWNID_FIELD_IDX].text = spawn_id_text;
     this->fields[LAYER_FIELD_IDX].text = layer_id_text;
     this->fields[HOUR_FIELD_IDX].text = hour_text;
@@ -165,13 +175,19 @@ void warp_pane__open(warp_pane *this){}
 void warp_pane__close(warp_pane *this){}
 
 void warp_pane__warp(warp_pane *this){
-    char *pStageName = this->fields[MAP_FIELD_IDX].text;
+    stage *current_stage = this->warp_list.stages[this->stage_index];
+    room *current_room = (room *)current_stage->rooms[this->room_index];
+
+    char *pStageName = current_stage->stage_name;
+    byte roomIdx = (byte)current_room->index;
+    byte spawnId = (byte)current_room->spawn_ids[this->spawn_id];
+    
 
     
-    byte roomIdx = (byte)atoi(this->fields[ROOM_FIELD_IDX].text);
+   // byte roomIdx = (byte)atoi(this->fields[ROOM_FIELD_IDX].text);
     
     byte layerNo = (byte)this->layer_id;//atoi(this->fields[LAYER_FIELD_IDX].text);
-    byte spawnId = (short)this->spawn_id;
+   // byte spawnId = (short)this->spawn_id;
 
     g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek = (short)this->dayOfWeek;
     g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mCurTime = this->hour * 15.0f;
@@ -179,7 +195,7 @@ void warp_pane__warp(warp_pane *this){
     OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__warp: pStageName = %s | roomIdx = %d | layerNo = %d | spawnId = %d\n",pStageName, roomIdx, layerNo, spawnId));
 
     //void dComIfGp_setNextStage(char * pStageName, short startCode, byte roomIdx, byte layerNo, float param_5, uint mode, int param_7, byte wipeType);
-    dComIfGp_setNextStage(pStageName, spawnId, roomIdx, layerNo, 0.0,0,1,0);
+    dComIfGp_setNextStage(pStageName, spawnId, roomIdx, layerNo, g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mCurTime,0,1,0);
 }
 void warp_pane__update_fields(warp_pane *this){
     if(DIGITAL_INPUTS[START].pressed){
@@ -259,23 +275,23 @@ void warp_pane__update_fields(warp_pane *this){
     }
 
     if(this->stage_index < 0){
-        this->stage_index = this->warp_list.stages.mCount - 2;
+        this->stage_index = this->warp_list.stage_count - 1;
     }
-    else if(this->stage_index >= this->warp_list.stages.mCount - 1){
+    else if(this->stage_index >= this->warp_list.stage_count){
         this->stage_index = 0;
     }
-    stage *current_stage = (stage *)JSUPtrList__get_index(&this->warp_list.stages, this->stage_index);
+    stage *current_stage = (stage *)this->warp_list.stages[this->stage_index];
     if(this->room_index < 0){
-        this->room_index = current_stage->rooms.mCount - 1;
+        this->room_index = current_stage->room_count - 1;
     }
-    else if(this->room_index >= current_stage->rooms.mCount){
+    else if(this->room_index >= current_stage->room_count){
         this->room_index = 0;
     }
-
+    room *current_room = (room *)current_stage->rooms[this->room_index];
     if(this->spawn_id < 0){
-        this->spawn_id = SPAWNID_MAX - 1;
+        this->spawn_id = current_room->spawn_count - 1;
     }
-    else if(this->spawn_id >= SPAWNID_MAX){
+    else if(this->spawn_id >= current_room->spawn_count){
         this->spawn_id = 0;
     }
 

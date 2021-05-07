@@ -12,6 +12,7 @@
 #include "inventory_pane.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
+#define GZ_MENU_DAT "/res/Menu/gzmenu.dat"
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
 //#define WARP_TEXT 0x726f6f74
@@ -32,8 +33,57 @@ static menu_pane_vtbl menu_pane____vt = {
     menu_pane__open,
     menu_pane__close
 };
+/*
+typedef enum PhaseState {
+    cPhs_ERROR_e=5,
+    cPhs_NEXT_e=6,
+    cPhs_COMPLEATE_e=4
+} PhaseState;
+*/
+//int cPhs__Handler(void *)* variable
+static int (*load_menu_dat_phases[])(menu_pane *) = {
+    menu_pane__phase_1,menu_phase__phase_2
+};
 
+int menu_pane__phase_1(menu_pane *this){ 
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_1: this = %X\n",this));
+    this->menu_dat_thd = mDoDvdThd_toMainRam_c__create(GZ_MENU_DAT,0,(JKRHeap *)0x0);
+    return 2; 
+}
+int menu_phase__phase_2(menu_pane *this){ 
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this = %X\n",this));
+    if(this->menu_dat_thd->parent.mStatus == 0){
+        return 0;
+    }
+    else{
+        OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this->menu_dat_thd->mpArchiveHeader = %X\n",this->menu_dat_thd->mpArchiveHeader));
+        warp_pane__set_stage_data((warp_pane*)this->sub_panes[0], this->menu_dat_thd->mpArchiveHeader);
+        return 4; 
+    }
+
+}
+void menu_pane__load_dat(menu_pane *this){
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__load_dat: this = %X\n",this));
+    d_com_lib_game__dComLbG_PhaseHandler(&this->load_menu_dat_request, &load_menu_dat_phases, this);
+}
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
+    //d_com_lib_game__dComLbG_PhaseHandler(request_of_phase_process_class * param_1, int param_2(void * ), void * param_3);
+
+    //dComLbG_PhaseHandler
+    // mDoDvdThd_toMainRam_c * menu_dat;
+    // menu_dat = mDoDvdThd_toMainRam_c__create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
+    // char status = menu_dat->parent.mStatus;
+    // while(status == '\0'){
+    //     status = menu_dat->parent.mStatus;
+    // }
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: menu_dat = %X | menu_dat->mHeapSize = %d | menu_dat->mpHeap = %X\n",menu_dat,menu_dat->mHeapSize,menu_dat->mpHeap));
+
+
+
+//   uVar1 = (mDoDvdThd_toMainRam_c *)mDoDvdThd_toMainRam_c::create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
+//  undefined mDoDvdThd_toMainRam_c__create(char * pFilePath, byte direction, JKRHeap * pHeap);
+
+
     //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: dayofweek= %X\n",&g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek));
 
     
@@ -124,10 +174,21 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
     screen_capture___new(&this->capture);
     menu_ddlst___new(&this->menu_ddlst_item, this);
+
     return this;
 }
 
 void menu_pane__draw(menu_pane *this){
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__draw: this->load_menu_dat_request.mStep = %d\n",this->load_menu_dat_request.mStep));
+    if(this->load_menu_dat_request.mStep < 1){
+        menu_pane__load_dat(this);
+
+    }
+    else if(this->load_menu_dat_request.mStep == 1){
+        if(this->load_menu_dat_request.mpTbl != 0){
+            menu_pane__load_dat(this);
+        }
+    }
     menu_pane__update_cursor(this);
     J2DGrafContext* pCtx = (J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph;
     J2DGrafContext__setPort((J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph);
