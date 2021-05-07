@@ -17,6 +17,7 @@
       {
         "event_name": "MEET_TETORA",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 1,
         "demo_archive_number": 3,
         "layer_ids": [
@@ -157,6 +158,7 @@
       {
         "event_name": "demo41",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 100,
         "demo_archive_number": 41,
         "layer_ids": [
@@ -182,6 +184,7 @@
       {
         "event_name": "towerd",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 0,
         "demo_archive_number": 19,
         "layer_ids": [
@@ -191,6 +194,7 @@
       {
         "event_name": "towerf",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 1,
         "demo_archive_number": 19,
         "layer_ids": [
@@ -200,6 +204,7 @@
       {
         "event_name": "towern",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 2,
         "demo_archive_number": 19,
         "layer_ids": [
@@ -209,6 +214,7 @@
       {
         "event_name": "warp_in",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 201,
         "demo_archive_number": 20,
         "layer_ids": [
@@ -218,6 +224,7 @@
       {
         "event_name": "warphole",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 232,
         "demo_archive_number": 33,
         "layer_ids": [
@@ -227,6 +234,7 @@
       {
         "event_name": "runaway_majuto",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 244,
         "demo_archive_number": 45,
         "layer_ids": [
@@ -933,6 +941,7 @@
       {
         "event_name": "dance_zola",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 226,
         "demo_archive_number": 27,
         "layer_ids": [
@@ -959,6 +968,7 @@
       {
         "event_name": "dance_kokiri",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 229,
         "demo_archive_number": 30,
         "layer_ids": [
@@ -976,6 +986,7 @@
       {
         "event_name": "ending",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 0,
         "demo_archive_number": 37,
         "layer_ids": [
@@ -1417,6 +1428,7 @@
       {
         "event_name": "kugutu_ganon",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 0,
         "demo_archive_number": 35,
         "layer_ids": [
@@ -1426,6 +1438,7 @@
       {
         "event_name": "to_roof",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 4,
         "demo_archive_number": 36,
         "layer_ids": [
@@ -1516,6 +1529,7 @@
       {
         "event_name": "g2before",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 0,
         "demo_archive_number": 42,
         "layer_ids": [
@@ -1525,6 +1539,7 @@
       {
         "event_name": "endhr",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 2,
         "demo_archive_number": 43,
         "layer_ids": [
@@ -1567,6 +1582,7 @@
       {
         "event_name": "rebirth_hyral",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 248,
         "demo_archive_number": 49,
         "layer_ids": [
@@ -1598,6 +1614,7 @@
       {
         "event_name": "seal",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 233,
         "demo_archive_number": 34,
         "layer_ids": [
@@ -1609,6 +1626,7 @@
       {
         "event_name": "warp_out",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 200,
         "demo_archive_number": 44,
         "layer_ids": [
@@ -2276,6 +2294,7 @@
       {
         "event_name": "pray_kokiri",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 231,
         "demo_archive_number": 32,
         "layer_ids": [
@@ -2317,6 +2336,7 @@
       {
         "event_name": "master_sword",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 200,
         "demo_archive_number": 21,
         "layer_ids": [
@@ -2327,6 +2347,7 @@
       {
         "event_name": "awake_zelda",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 201,
         "demo_archive_number": 25,
         "layer_ids": [
@@ -2336,6 +2357,7 @@
       {
         "event_name": "swing_sword",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 249,
         "demo_archive_number": 50,
         "layer_ids": [
@@ -2518,6 +2540,7 @@
       {
         "event_name": "TALE_DEMO",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 200,
         "demo_archive_number": 1,
         "layer_ids": [
@@ -2527,6 +2550,7 @@
       {
         "event_name": "TALE_DEMO2",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 202,
         "demo_archive_number": 1,
         "layer_ids": [
@@ -2536,6 +2560,7 @@
       {
         "event_name": "get_shield",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 201,
         "demo_archive_number": 48,
         "layer_ids": [
@@ -2756,6 +2781,7 @@
       {
         "event_name": "attack_ganon",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 0,
         "demo_archive_number": 24,
         "layer_ids": [
@@ -2803,6 +2829,7 @@
       {
         "event_name": "rescue",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 16,
         "demo_archive_number": 23,
         "layer_ids": [
@@ -3094,6 +3121,7 @@
       {
         "event_name": "FIND_SISTER",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 16,
         "demo_archive_number": 7,
         "layer_ids": [
@@ -3181,6 +3209,7 @@
       {
         "event_name": "bombshop",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 200,
         "demo_archive_number": 17,
         "layer_ids": [
@@ -3371,6 +3400,7 @@
       {
         "event_name": "meet_deku",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 213,
         "demo_archive_number": 14,
         "layer_ids": [
@@ -3380,6 +3410,7 @@
       {
         "event_name": "getperl_deku",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 214,
         "demo_archive_number": 15,
         "layer_ids": [
@@ -3435,6 +3466,7 @@
       {
         "event_name": "awake_kokiri",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 230,
         "demo_archive_number": 31,
         "layer_ids": [
@@ -3498,6 +3530,7 @@
       {
         "event_name": "getperl_jab",
         "display_name": null,
+        "room_index": 0,
         "spawn_id": 200,
         "demo_archive_number": 18,
         "layer_ids": [
@@ -3589,6 +3622,7 @@
       {
         "event_name": "title",
         "display_name": null,
+        "room_index": 44,
         "spawn_id": 0,
         "demo_archive_number": 51,
         "layer_ids": [
