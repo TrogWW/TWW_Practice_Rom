@@ -144,12 +144,12 @@
 
     </window>
     <!--Warp Menu-->
-    <window id="WPMN" visible="False">
+    <window id="WPMN">
       <rectangle>
         <x>200</x>
         <y>45</y>
-        <width>220</width>
-        <height>115</height>
+          <width>220</width>
+          <height>350</height>
       </rectangle>
       
       <content>
@@ -157,7 +157,7 @@
           <x>0</x>
           <y>0</y>
           <width>220</width>
-          <height>315</height>
+          <height>350</height>
         </rectangle>
       </content>
       
@@ -180,8 +180,46 @@
 					<color>000000FF</color>
 				</bottom-right>
 			</corners> 
+	
+		<window id="EVNT">
+		  <rectangle>
+			<x>240</x>
+			<y>20</y>
+		  <width>160</width>
+		  <height>100</height>
+		  </rectangle>
+		  
+		  <content>
+			<rectangle>
+			  <x>0</x>
+			  <y>0</y>
+			  <width>160</width>
+			  <height>100</height>
+			</rectangle>
+		  </content>
+		  
+      <alpha>255</alpha>
+            
+			<corners>
+				<top-left>
+					<color>000000FF</color>
+				</top-left>
+
+				<top-right>
+					<color>000000FF</color>
+				</top-right>
+
+				<bottom-left>
+					<color>000000FF</color>
+				</bottom-left>
+
+				<bottom-right>
+					<color>000000FF</color>
+				</bottom-right>
+			</corners> 
+		</window>
     </window>
-    <window id="INVN">
+    <window id="INVN" visible="False">
       <rectangle>
         <x>200</x>
         <y>45</y>

@@ -1,12 +1,14 @@
 #ifndef WARPPANE_C_INCLUDED
 #define WARPPANE_C_INCLUDED
 
-#define MAP_FIELD_IDX 0
-#define ROOM_FIELD_IDX 1
-#define SPAWNID_FIELD_IDX 2
-#define LAYER_FIELD_IDX 3
-#define HOUR_FIELD_IDX 4
-#define WEEK_FIELD_IDX 5
+//#define EVNT_TXT 0x45564e54
+#define AREA_FIELD_IDX 0
+#define MAP_FIELD_IDX 1
+#define ROOM_FIELD_IDX 2
+#define SPAWNID_FIELD_IDX 3
+#define LAYER_FIELD_IDX 4
+#define HOUR_FIELD_IDX 5
+#define WEEK_FIELD_IDX 6
 
 // #define SPAWNID_MAX 255
 #define LAYER_MAX 9
@@ -17,7 +19,7 @@
 #include "base_pane.c"
 #include "textbox/textbox.c"
 #include "textbox/text_color_pallete.h"
-#include "stage/stage_list.c"
+#include "stage/area_list.c"
 #include "stage/stage.c"
 #include "../helpers/JSUPtr_helpers.c" //for JSUPtrList__get_index
 
@@ -29,7 +31,8 @@ static warp_pane_vtbl warp_pane____vt = {
     warp_pane__close
 };
 warp_pane__set_stage_data(warp_pane *this, void *data){
-    stage_list__new(&this->warp_list, data);
+    this->warp_list = (area_list*)data;
+    area_list__new(this->warp_list, (int)data);
 }
 warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY){
     if(this == 0){
@@ -51,12 +54,14 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     byte spawn_id;
     byte layer_id;
     byte hour;
+    this->area_index = 0;
     this->stage_index = 0;
     this->room_index = 0;
     this->spawn_id = 0;
     this->layer_id = 0;
     this->hour = (int)MSL_C_PPCEABI_bare_H__floor(g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mCurTime / 15.0);
     this->dayOfWeek = g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek;
+    this->event_window_enabled = false;
 /*    
     GzTextBox stage_label;
     GzTextBox stage_text;
@@ -73,51 +78,119 @@ warp_pane* warp_pane__new(warp_pane *this, base_pane *parent, J2DWindow *pane, f
     float label_font_scale = 1.0;
     float field_font_scale = 0.8;
     
-    GzTextBox__new(&this->labels[0], &this->base, xPadding, yPadding + (yOffset * 0), "Map", &TEXT_PALLETE_WHITE, 0, label_font_scale);
+    GzTextBox__new(&this->labels[0], &this->base, xPadding, yPadding + (yOffset * 0), "Area", &TEXT_PALLETE_WHITE, 0, label_font_scale);
     GzTextBox__new(&this->fields[0], &this->base, xPadding, yPadding + (yOffset * 0.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[1], &this->base, xPadding, yPadding + (yOffset * 2), "Room", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->labels[1], &this->base, xPadding, yPadding + (yOffset * 2), "Map", &TEXT_PALLETE_WHITE, 0, label_font_scale);
     GzTextBox__new(&this->fields[1], &this->base, xPadding, yPadding + (yOffset * 2.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[2], &this->base, xPadding, yPadding + (yOffset * 4), "Entrance", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->labels[2], &this->base, xPadding, yPadding + (yOffset * 4), "Room", &TEXT_PALLETE_WHITE, 0,label_font_scale);
     GzTextBox__new(&this->fields[2], &this->base, xPadding, yPadding + (yOffset * 4.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[3], &this->base, xPadding, yPadding + (yOffset * 6), "Layer", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->labels[3], &this->base, xPadding, yPadding + (yOffset * 6), "Entrance", &TEXT_PALLETE_WHITE, 0,label_font_scale);
     GzTextBox__new(&this->fields[3], &this->base, xPadding, yPadding + (yOffset * 6.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[4], &this->base, xPadding, yPadding + (yOffset * 8), "Hour", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->labels[4], &this->base, xPadding, yPadding + (yOffset * 8), "Layer", &TEXT_PALLETE_WHITE, 0,label_font_scale);
     GzTextBox__new(&this->fields[4], &this->base, xPadding, yPadding + (yOffset * 8.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
 
-    GzTextBox__new(&this->labels[5], &this->base, xPadding, yPadding + (yOffset * 10), "Day of Week", &TEXT_PALLETE_WHITE, 0,label_font_scale);
-    GzTextBox__new(&this->fields[5], &this->base, xPadding, yPadding + (yOffset * 10.75), "", &TEXT_PALLETE_WHITE_70, 0,field_font_scale);
+    GzTextBox__new(&this->labels[5], &this->base, xPadding, yPadding + (yOffset * 10), "Hour", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[5], &this->base, xPadding, yPadding + (yOffset * 10.75), "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
+
+    GzTextBox__new(&this->labels[6], &this->base, xPadding, yPadding + (yOffset * 12), "Day of Week", &TEXT_PALLETE_WHITE, 0,label_font_scale);
+    GzTextBox__new(&this->fields[6], &this->base, xPadding, yPadding + (yOffset * 12.75), "", &TEXT_PALLETE_WHITE_70, 0,field_font_scale);
+
+
+
+    GzTextBox__new(&this->event_label, &this->base, 210.0f, 60.0f, "Events", &TEXT_PALLETE_WHITE, 0, label_font_scale);
+    GzTextBox__new(&this->event_field, &this->base, 210.0f, 90.0f, "", &TEXT_PALLETE_WHITE_70, 0, field_font_scale);
+
     return this;
 }
-void warp_pane__draw(warp_pane *this){
-    if(this->warp_list.stage_count == 0){
-        return;
+event *warp_pane__current_event(warp_pane *this){
+    stage *current_stage = warp_pane__current_stage(this);
+    if(current_stage != 0 && current_stage->event_count > 0){
+        return &current_stage->events[this->event_index];
     }
-    //stage *current_stage = (stage *)JSUPtrList__get_index(&this->warp_list.stages, this->stage_index);
-    //char *current_room = (char *)JSUPtrList__get_index(&current_stage->rooms, this->room_index);
-    //int MSL_C_PPCEABI_bare_H__sprintf(char * __s, char * __format, ...);
-    stage *current_stage = this->warp_list.stages[this->stage_index];
-    room *current_room = (room *)current_stage->rooms[this->room_index];
-    int room_index = current_room->index;
-    int spawn_index = current_room->spawn_ids[this->spawn_id];
+    else{
+        return 0;
+    }
+}
+room *warp_pane__current_room(warp_pane *this){
+    stage *current_stage = warp_pane__current_stage(this);
+    if(current_stage != 0 && current_stage->room_count > 0){
+        return &current_stage->rooms[this->room_index];
+    }
+    else{
+        return 0;
+    }
+}
+stage *warp_pane__current_stage(warp_pane *this){
+    area *current_area = warp_pane__current_area(this);
+    if(current_area != 0 && current_area->stage_count > 0){
+        return &current_area->stages[this->stage_index];
+    }
+    else{
+        return 0;
+    }
+}
+area *warp_pane__current_area(warp_pane *this){
+    return &this->warp_list->areas[this->area_index];
+}
+void warp_pane__draw(warp_pane *this){
+    area *current_area = warp_pane__current_area(this);
+    stage *current_stage = warp_pane__current_stage(this);
+    room *current_room = warp_pane__current_room(this);
+    event *current_event = warp_pane__current_event(this);
+
     char spawn_id_text[3];
     char layer_id_text[2];
     char hour_text[3];
     char dayOfWeek_text[2];
     char room_index_text[3];
-    MSL_C_PPCEABI_bare_H__sprintf(room_index_text, "%d",room_index);
-    MSL_C_PPCEABI_bare_H__sprintf(spawn_id_text, "%d",spawn_index);
-    MSL_C_PPCEABI_bare_H__sprintf(layer_id_text, "%d",this->layer_id);  
+
+    char event_title[20];
+    if(this->event_window_enabled == false){
+        int room_index = 0;
+        int spawn_index = 0;
+        if(current_room != 0){
+            room_index = current_room->index;
+            spawn_index = current_room->spawn_ids[this->spawn_id];
+        }
+
+        MSL_C_PPCEABI_bare_H__sprintf(room_index_text, "%d",room_index);
+        MSL_C_PPCEABI_bare_H__sprintf(spawn_id_text, "%d",spawn_index);
+        MSL_C_PPCEABI_bare_H__sprintf(layer_id_text, "%d",this->layer_id);  
+
+    }
+    else{
+        MSL_C_PPCEABI_bare_H__sprintf(room_index_text, "%d",current_event->room_index);
+        MSL_C_PPCEABI_bare_H__sprintf(spawn_id_text, "%d",current_event->spawn_id);
+        MSL_C_PPCEABI_bare_H__sprintf(layer_id_text, "%d",current_event->layer_ids[0]);  //TODO
+    }
+    MSL_C_PPCEABI_bare_H__sprintf(event_title, "Events (%d)",current_stage->event_count);
     MSL_C_PPCEABI_bare_H__sprintf(hour_text, "%d",this->hour); 
     MSL_C_PPCEABI_bare_H__sprintf(dayOfWeek_text, "%d",this->dayOfWeek); 
+    this->fields[AREA_FIELD_IDX].text = current_area->area_name;
+    if(current_stage->display_name != 0){
+        this->fields[MAP_FIELD_IDX].text = current_stage->display_name;
+    }
+    else{
+        this->fields[MAP_FIELD_IDX].text = current_stage->stage_name;
+    }
 
-    this->fields[MAP_FIELD_IDX].text = current_stage->stage_name;
-    this->fields[ROOM_FIELD_IDX].text = room_index_text;
-    this->fields[SPAWNID_FIELD_IDX].text = spawn_id_text;
-    this->fields[LAYER_FIELD_IDX].text = layer_id_text;
+
+    if(current_room != 0){
+        this->fields[ROOM_FIELD_IDX].text = room_index_text;
+        this->fields[SPAWNID_FIELD_IDX].text = spawn_id_text;
+        this->fields[LAYER_FIELD_IDX].text = layer_id_text;
+    }
+    else{
+        this->fields[ROOM_FIELD_IDX].text = "";
+        this->fields[SPAWNID_FIELD_IDX].text =  "";
+        this->fields[LAYER_FIELD_IDX].text =  "";
+    }
+
+
     this->fields[HOUR_FIELD_IDX].text = hour_text;
     this->fields[WEEK_FIELD_IDX].text = dayOfWeek_text;
 
@@ -145,6 +218,19 @@ void warp_pane__draw(warp_pane *this){
 
         GzTextBox__draw(&this->fields[i],0);
     }
+    this->event_label.pallete = &TEXT_PALLETE_WHITE;
+    this->event_label.text = event_title;
+    if(this->event_window_enabled){
+        this->event_field.text = current_event->event_name;
+        this->event_field.pallete = &TEXT_PALLETE_WHITE;
+    }
+    else{
+        this->event_field.text = "N/A";
+        this->event_field.pallete = &TEXT_PALLETE_WHITE_70;
+    }
+
+    GzTextBox__draw(&this->event_label,0);
+    GzTextBox__draw(&this->event_field,0);
     this->base.pane->parent.mbDraw = true;
 }
 void warp_pane__hide(warp_pane *this){
@@ -152,42 +238,65 @@ void warp_pane__hide(warp_pane *this){
 }
 
 void warp_pane__update_cursor(warp_pane *this){
-    if(DIGITAL_INPUTS[D_PAD_UP].pressed){
-        this->base.cursor = this->base.cursor - 1;
-        if(this->base.cursor < 0){
-            this->base.cursor = WARP_FIELD_COUNT - 1; //screen wrap cursor
+    if(this->event_window_enabled){
+        warp_pane__update_event_fields(this);
+        if(DIGITAL_INPUTS[D_PAD_LEFT].pressed){
+            this->event_window_enabled = false;
         }
     }
-    else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
-        this->base.cursor = this->base.cursor + 1;
-        if(this->base.cursor >= WARP_FIELD_COUNT){
-            this->base.cursor = 0;
+    else{
+        if(DIGITAL_INPUTS[D_PAD_UP].pressed){
+            this->base.cursor = this->base.cursor - 1;
+            if(this->base.cursor < 0){
+                this->base.cursor = WARP_FIELD_COUNT - 1; //screen wrap cursor
+            }
+        }
+        else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
+            this->base.cursor = this->base.cursor + 1;
+            if(this->base.cursor >= WARP_FIELD_COUNT){
+                this->base.cursor = 0;
+            }
+        }
+        else if(DIGITAL_INPUTS[D_PAD_LEFT].pressed){
+            this->parent->cursor_active = true;
+            this->base.cursor_active = false;
+        }
+        warp_pane__update_fields(this);
+
+
+        stage *current_stage = warp_pane__current_stage(this);
+        if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed && current_stage->event_count > 0){
+            this->event_window_enabled = true;
+        }
+        else{
+            this->event_window_enabled = false;
+            this->event_index = 0;
         }
     }
-    else if(DIGITAL_INPUTS[D_PAD_LEFT].pressed){
-        this->parent->cursor_active = true;
-        this->base.cursor_active = false;
-    }
-    warp_pane__update_fields(this);
 }
 
 void warp_pane__open(warp_pane *this){}
 void warp_pane__close(warp_pane *this){}
 
 void warp_pane__warp(warp_pane *this){
-    stage *current_stage = this->warp_list.stages[this->stage_index];
-    room *current_room = (room *)current_stage->rooms[this->room_index];
-
+    stage *current_stage = warp_pane__current_stage(this);
+    room *current_room = warp_pane__current_room(this);
+    event *current_event = warp_pane__current_event(this);
     char *pStageName = current_stage->stage_name;
-    byte roomIdx = (byte)current_room->index;
-    byte spawnId = (byte)current_room->spawn_ids[this->spawn_id];
-    
+    byte roomIdx = 0;
+    byte spawnId = 0;
+    byte layerNo = 0;
+    if(this->event_window_enabled == false){
+        roomIdx = (byte)current_room->index;
+        spawnId= (byte)current_room->spawn_ids[this->spawn_id];
+        layerNo = (byte)this->layer_id;
+    }
+    else{
+        roomIdx = (byte)current_event->room_index;
+        spawnId = (byte)current_event->spawn_id;
+        layerNo = (byte)current_event->layer_ids[0]; //todo
+    }
 
-    
-   // byte roomIdx = (byte)atoi(this->fields[ROOM_FIELD_IDX].text);
-    
-    byte layerNo = (byte)this->layer_id;//atoi(this->fields[LAYER_FIELD_IDX].text);
-   // byte spawnId = (short)this->spawn_id;
 
     g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek = (short)this->dayOfWeek;
     g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mCurTime = this->hour * 15.0f;
@@ -197,15 +306,63 @@ void warp_pane__warp(warp_pane *this){
     //void dComIfGp_setNextStage(char * pStageName, short startCode, byte roomIdx, byte layerNo, float param_5, uint mode, int param_7, byte wipeType);
     dComIfGp_setNextStage(pStageName, spawnId, roomIdx, layerNo, g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mCurTime,0,1,0);
 }
+void warp_pane__update_event_fields(warp_pane *this){
+    if(DIGITAL_INPUTS[START].pressed){
+        warp_pane__warp(this);
+        this->parent->vptr->hide(this->parent);
+        return;
+    }
+
+    bool xPressed = DIGITAL_INPUTS[X].pressed || DIGITAL_INPUTS[X].long_held;
+    bool yPressed = DIGITAL_INPUTS[Y].pressed || DIGITAL_INPUTS[Y].long_held;
+    bool zPressed = DIGITAL_INPUTS[Z].pressed;
+
+    stage *current_stage = warp_pane__current_stage(this);
+
+    if(xPressed){
+        this->event_index = this->event_index + 1;
+    }
+    else if(yPressed){
+        this->event_index = this->event_index - 1;
+    }
+    else if(zPressed){
+        this->event_index = 0;
+    }
+    if(this->event_index < 0){
+        this->event_index = current_stage->event_count - 1;
+    }
+    else if(this->event_index >= current_stage->event_count){
+        this->event_index = 0;
+    }
+    //event *current_event = &current_stage->events[this->event_index];
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("warp_pane__update_event_fields: this->event_index = %d | current_stage->stage_name = %s | current_stage->event_count = %d | current_event->event_name = %s\n",
+    //this->event_index, current_stage->stage_name, current_stage->event_count, current_event->event_name));
+
+}
 void warp_pane__update_fields(warp_pane *this){
     if(DIGITAL_INPUTS[START].pressed){
         warp_pane__warp(this);
         this->parent->vptr->hide(this->parent);
         return;
     }
+
     bool xPressed = DIGITAL_INPUTS[X].pressed || DIGITAL_INPUTS[X].long_held;
     bool yPressed = DIGITAL_INPUTS[Y].pressed || DIGITAL_INPUTS[Y].long_held;
     bool zPressed = DIGITAL_INPUTS[Z].pressed;
+
+    
+    if(this->base.cursor == AREA_FIELD_IDX){
+        if(xPressed){
+            this->area_index = this->area_index + 1;
+        }
+        else if(yPressed){
+            this->area_index = this->area_index - 1;
+        }
+        else if(zPressed){
+            this->area_index = 0;
+        }
+
+    }
     if(this->base.cursor == MAP_FIELD_IDX){
         if(xPressed){
             this->stage_index = this->stage_index + 1;
@@ -273,27 +430,44 @@ void warp_pane__update_fields(warp_pane *this){
             this->dayOfWeek = 0;
         }
     }
-
-    if(this->stage_index < 0){
-        this->stage_index = this->warp_list.stage_count - 1;
+    if(this->area_index < 0){
+        this->area_index = this->warp_list->area_count - 1;
     }
-    else if(this->stage_index >= this->warp_list.stage_count){
+    else if(this->area_index >= this->warp_list->area_count){
+        this->area_index = 0;
+    }
+    if(this->stage_index < 0){
+        this->stage_index = this->warp_list->areas[this->area_index].stage_count - 1;
+    }
+    else if(this->stage_index >= this->warp_list->areas[this->area_index].stage_count){
         this->stage_index = 0;
     }
-    stage *current_stage = (stage *)this->warp_list.stages[this->stage_index];
-    if(this->room_index < 0){
-        this->room_index = current_stage->room_count - 1;
+    stage *current_stage = warp_pane__current_stage(this);
+    if(current_stage != 0){
+        if(this->room_index < 0){
+            this->room_index = current_stage->room_count - 1;
+        }
+        else if(this->room_index >= current_stage->room_count){
+            this->room_index = 0;
+        }
     }
-    else if(this->room_index >= current_stage->room_count){
+    else{
         this->room_index = 0;
     }
-    room *current_room = (room *)current_stage->rooms[this->room_index];
-    if(this->spawn_id < 0){
-        this->spawn_id = current_room->spawn_count - 1;
+
+    room *current_room = warp_pane__current_room(this);
+    if(current_room != 0){
+        if(this->spawn_id < 0){
+            this->spawn_id = current_room->spawn_count - 1;
+        }
+        else if(this->spawn_id >= current_room->spawn_count){
+            this->spawn_id = 0;
+        }
     }
-    else if(this->spawn_id >= current_room->spawn_count){
+    else{
         this->spawn_id = 0;
     }
+
 
     if(this->layer_id < 0){
         this->layer_id = LAYER_MAX - 1;
