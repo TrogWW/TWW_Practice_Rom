@@ -3,10 +3,11 @@
 
 typedef struct room {
     int index;
+    char *display_name;
     int spawn_count;
     int *spawn_ids;  
 } room;
 
-int room__new(room *this, void *data);
+int room__new(room *this, int offset);
 
 #endif
