@@ -16,21 +16,21 @@ struct JSUPtrLink {
     struct JSUPtrLink * mpNext; // 0x04 bytes
 };
 */
-void* JSUPtrList__get_index(JSUPtrList *this, int index){
-    if(index < 0 || index >= this->mCount){
-        return NULL;
-    }
-    int curr_index = 0;
-    JSUPtrLink *curr_link = this->mpHead;
-    while(curr_index < this->mCount){
-        if(curr_index == index){
-            return curr_link->mpData;
-        }
-        else{
-            curr_link = curr_link->mpNext;
-            curr_index = curr_index + 1;
-        }
-    }
-    return NULL;
-}
+// void* JSUPtrList__get_index(JSUPtrList *this, int index){
+//     if(index < 0 || index >= this->mCount){
+//         return NULL;
+//     }
+//     int curr_index = 0;
+//     JSUPtrLink *curr_link = this->mpHead;
+//     while(curr_index < this->mCount){
+//         if(curr_index == index){
+//             return curr_link->mpData;
+//         }
+//         else{
+//             curr_link = curr_link->mpNext;
+//             curr_index = curr_index + 1;
+//         }
+//     }
+//     return NULL;
+// }
 #endif

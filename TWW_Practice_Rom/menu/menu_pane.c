@@ -10,9 +10,11 @@
 #include "screen_capture.c"
 #include "warp_pane.c"
 #include "inventory_pane.c"
+#include "../DvdThd_PhaseHandler.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define GZ_MENU_DAT "/res/Menu/gzmenu.dat"
+
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
 //#define WARP_TEXT 0x726f6f74
@@ -42,61 +44,30 @@ typedef enum PhaseState {
 */
 //int cPhs__Handler(void *)* variable
 static int (*load_menu_dat_phases[])(menu_pane *) = {
-    menu_pane__phase_1,menu_phase__phase_2
+    menu_pane__phase_1, menu_phase__phase_2
 };
 
 int menu_pane__phase_1(menu_pane *this){ 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_1: this = %X\n",this));
-    this->menu_dat_thd = mDoDvdThd_toMainRam_c__create(GZ_MENU_DAT,0,(JKRHeap *)0x0);
-    return 2; 
+    this->load_warp_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_MENU_DAT,0,(JKRHeap *)0x0);
+    return 2;   //2 = next phase
 }
 int menu_phase__phase_2(menu_pane *this){ 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this = %X\n",this));
-    if(this->menu_dat_thd->parent.mStatus == 0){
-        return 0;
+    mDoDvdThd_toMainRam_c * data = (mDoDvdThd_toMainRam_c *)this->load_warp_menu_handler.data;
+    if(data->parent.mStatus == 0){
+        return 0; //0 = not complete
     }
     else{
-        OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this->menu_dat_thd->mpArchiveHeader = %X\n",this->menu_dat_thd->mpArchiveHeader));
-        warp_pane__set_stage_data((warp_pane*)this->sub_panes[0], this->menu_dat_thd->mpArchiveHeader);
-        return 4; 
+        OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this->menu_dat_thd->mpArchiveHeader = %X\n",data->mpArchiveHeader));
+        warp_pane__set_stage_data((warp_pane*)this->sub_panes[0], data->mpArchiveHeader);
+        this->load_warp_menu_handler.complete = true;
+        return 4; //4 = complete
     }
-
 }
-void menu_pane__load_dat(menu_pane *this){
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__load_dat: this = %X\n",this));
-    d_com_lib_game__dComLbG_PhaseHandler(&this->load_menu_dat_request, &load_menu_dat_phases, this);
-}
+// void menu_pane__load_dat(menu_pane *this){
+//     OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__load_dat: this = %X\n",this));
+//     d_com_lib_game__dComLbG_PhaseHandler(&this->load_menu_dat_request, &load_menu_dat_phases, this);
+// }
 menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
-    //d_com_lib_game__dComLbG_PhaseHandler(request_of_phase_process_class * param_1, int param_2(void * ), void * param_3);
-
-    //dComLbG_PhaseHandler
-    // mDoDvdThd_toMainRam_c * menu_dat;
-    // menu_dat = mDoDvdThd_toMainRam_c__create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
-    // char status = menu_dat->parent.mStatus;
-    // while(status == '\0'){
-    //     status = menu_dat->parent.mStatus;
-    // }
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: menu_dat = %X | menu_dat->mHeapSize = %d | menu_dat->mpHeap = %X\n",menu_dat,menu_dat->mHeapSize,menu_dat->mpHeap));
-
-
-
-//   uVar1 = (mDoDvdThd_toMainRam_c *)mDoDvdThd_toMainRam_c::create("/res/Menu/Menu1.dat",0,(JKRHeap *)0x0);
-//  undefined mDoDvdThd_toMainRam_c__create(char * pFilePath, byte direction, JKRHeap * pHeap);
-
-
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: dayofweek= %X\n",&g_dComIfG_gameInfo.mSvInfo.mSave.mPlayer.mStatusB.mDayOfWeek));
-
-    
-    //stage_scls_info_class *sceneList =  (stage_scls_info_class *)getSceneList(0);
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: sceneList= %d\n",sceneList));
-
-    //dStage__ObjectNameTable * d_stage__dStage_searchName(char * pName);-J
-
-    //    dRes_info_c* mStageInfo = g_dComIfG_gameInfo.mResCtrl.mStageInfo;
-    //    dRes_info_c* resInfo = dRes_control_c__getResInfo(RES_NAME, mStageInfo, 0x40);
-    //    dRes_control_c__getRes("Stage", "stage.dzs", resInfo, 0x40);
-
-
     //d_stage::dStage_infoCreate(void) is also promising
     //    dRes_control_c::getRes("Stage","stage.dzs",d_com_inf_game::g_dComIfG_gameInfo.mResCtrl.mStageInfo,0x40);
 
@@ -175,65 +146,46 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     screen_capture___new(&this->capture);
     menu_ddlst___new(&this->menu_ddlst_item, this);
 
+
+    DvdThd_PhaseHandler__new(&this->load_warp_menu_handler, &load_menu_dat_phases, this);
+    DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &this->load_warp_menu_handler);
     return this;
 }
-
 void menu_pane__draw(menu_pane *this){
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__draw: this->load_menu_dat_request.mStep = %d\n",this->load_menu_dat_request.mStep));
-    if(this->load_menu_dat_request.mStep < 1){
-        menu_pane__load_dat(this);
-
-    }
-    else if(this->load_menu_dat_request.mStep == 1){
-        if(this->load_menu_dat_request.mpTbl != 0){
-            menu_pane__load_dat(this);
-        }
-    }
     menu_pane__update_cursor(this);
     J2DGrafContext* pCtx = (J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph;
     J2DGrafContext__setPort((J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph);
 
 
-        //draw pane background
+    //draw pane background
     J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
     //draw sub pane titles
     for(int i = 0; i < SUB_PANE_SIZE; i++){
-        if(this->base.cursor == i){
-
+        if(this->base.cursor == i){             //this is the active sub pane
             if(this->base.cursor_active){
                 this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE;
             }
             else{
                 this->sub_panes[i]->title.pallete = &TEXT_PALLETE_MENU_INACTIVE;
             }   
-            this->sub_panes[i]->vptr->draw(this->sub_panes[i]);     
+            this->sub_panes[i]->vptr->draw(this->sub_panes[i]); //draw active sub pane
         }
-        else{
+        else{   //this is an inactive sub pane
             this->sub_panes[i]->title.pallete = &TEXT_PALLETE_WHITE_70;
-            this->sub_panes[i]->vptr->hide(this->sub_panes[i]);   
+            this->sub_panes[i]->vptr->hide(this->sub_panes[i]);   //hide inactive sub pane
         }
         base_pane *sub_pane = this->sub_panes[i];
         GzTextBox__draw(&sub_pane->title,2);
     }
-
-    //draw active sub pane
-    //base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
-
-    //active_sub_pane->vptr->draw(active_sub_pane);
 }
 
 void menu_pane__hide(menu_pane *this){
-    JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x810, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
-    //dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture); // this was causing the values in this->sub_panes to be incorrect?
-    d_menu_window__dMs_capture_c = 0;
-    d_meter__dMenu_flagSet(0);
-    d_meter__dMenu_setMenuStatus(1);
-    d_meter__dMenu_setMenuStatusOld();
     this->active = false;
 }
 
 void menu_pane__update_cursor(menu_pane *this){
+    
     if(this->base.cursor_active){
         if(DIGITAL_INPUTS[D_PAD_UP].pressed){
             JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
@@ -241,6 +193,8 @@ void menu_pane__update_cursor(menu_pane *this){
             if(this->base.cursor < 0){
                 this->base.cursor = SUB_PANE_SIZE - 1; //screen wrap cursor
             }
+            base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
+            active_sub_pane->vptr->open(active_sub_pane);   //call sub pane open function
         }
         else if(DIGITAL_INPUTS[D_PAD_DOWN].pressed){
             JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
@@ -248,12 +202,14 @@ void menu_pane__update_cursor(menu_pane *this){
             if(this->base.cursor >= SUB_PANE_SIZE){
                 this->base.cursor = 0;
             }
+            base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
+            active_sub_pane->vptr->open(active_sub_pane);   //call sub pane open function
         }
         else if(DIGITAL_INPUTS[D_PAD_RIGHT].pressed || DIGITAL_INPUTS[A].pressed){
             JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x80e, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
             this->base.cursor_active = false;
             this->sub_panes[this->base.cursor]->cursor = 0; //activate sub pane cursor
-            this->sub_panes[this->base.cursor]->cursor_active = true;
+            this->sub_panes[this->base.cursor]->cursor_active = true;         
         }
     }
     else{
@@ -261,8 +217,23 @@ void menu_pane__update_cursor(menu_pane *this){
         active_sub_pane->vptr->update_cursor(active_sub_pane);
     }
 }
-void menu_pane__open(menu_pane *this){}
-void menu_pane__close(menu_pane *this){}
+void menu_pane__open(menu_pane *this){
+    this->active = true;
+    base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
+    active_sub_pane->vptr->open(active_sub_pane);   //call sub pane open function
+}
+void menu_pane__close(menu_pane *this){
+    JAIZelBasic__seStart(JAIZelBasic__zel_basic, 0x810, 0, 0,0, 1.0, 1.0, -1.0, -1.0, 0);
+    //dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture); // this was causing the values in this->sub_panes to be incorrect?
+    d_menu_window__dMs_capture_c = 0;
+    d_meter__dMenu_flagSet(0);
+    d_meter__dMenu_setMenuStatus(1);
+    d_meter__dMenu_setMenuStatusOld();
+    this->active = false;
+
+    base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
+    active_sub_pane->vptr->close(active_sub_pane);   //call sub pane open function
+}
 void menu_pane__update_dDlst(menu_pane *this){
     d_meter__dMenu_flagSet(1);  //this is a flag the menu code checks to see if it should render screen capture. also pauses the game
     if(d_menu_window__dMs_capture_c == 0){

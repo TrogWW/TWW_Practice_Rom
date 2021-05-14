@@ -13,34 +13,42 @@
 #include "input.h"
 #include "menu/load_menu_context.c"
 #include "menu/menu_pane.c"
-
-load_menu_context load_menu_ctx;
-menu_pane main_pane;
+#include "DvdThd_PhaseHandler.c"
+#include "tools/wiird_loader_context.c"
 
 void _menu_exec(Settings* settings){
-    if(load_menu_ctx.mMenuResArc == 0){
-        PhaseState phase = load_menu((load_menu_context*)&load_menu_ctx);
-        if(phase == cPhs_ERROR_e){
-            OSReport("gzMenu: Error loading gzMenu arc!");
-        }
+
+    //TODO load wiird codes..
+    // if(code_list.load_wiird_code_handler.object == 0){
+    //     DvdThd_PhaseHandler__new(&code_list.load_wiird_code_handler,&wiird_loader_phases, &code_list);
+    //     DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &code_list.load_wiird_code_handler);
+    // }
+    // else{
+    //     if(code_list.load_wiird_code_handler.complete){
+    //         wiird__execute();
+    //     }
+    // }
+    if(load_menu_arc_handler.object == 0){
+        OSReport(MSL_C_PPCEABI_bare_H__printf("_menu_exec: loading menu\n"));
+        DvdThd_PhaseHandler__new(&load_menu_arc_handler,&load_menu_arc_phases, &load_menu_arc_handler);
+        DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &load_menu_arc_handler);
     }
-    if(load_menu_ctx.mMenuResArc != 0){
-        if(main_pane.base.vptr == 0){
-            menu_pane___new(&main_pane, load_menu_ctx.mMenuResArc);
-        }
-        if(main_pane.active == false){
-            if(Two_Inputs_Pressed(&DIGITAL_INPUTS[X], &DIGITAL_INPUTS[D_PAD_LEFT])){
-                main_pane.active = true;  
+    else{
+        if(load_menu_arc_handler.complete){
+            if(main_pane.active == false){
+                if(Two_Inputs_Pressed(&DIGITAL_INPUTS[X], &DIGITAL_INPUTS[D_PAD_LEFT])){
+                    menu_pane__open(&main_pane); 
+                }
+            }
+            else{
+                if(DIGITAL_INPUTS[B].pressed){                
+                    menu_pane__close(&main_pane);
+                }
+            }
+            if(main_pane.active){
+                menu_pane__update_dDlst(&main_pane);
             }
         }
-        else{
-            if(DIGITAL_INPUTS[B].pressed){
-                main_pane.active = false;
-                menu_pane__hide(&main_pane);
-            }
-        }
-        if(main_pane.active){
-            menu_pane__update_dDlst(&main_pane);
-        }
     }
+
 }

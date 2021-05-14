@@ -65,13 +65,10 @@ float base_pane_yOffset(base_pane *this, float yOffset){
 }
 float base_pane_width(base_pane *this){
     TBox2__float__ *winBoxPos = &this->pane->mWindowBox;
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane_width: this->pane = %X | this->pane + 0xE0 = %X\n",this->pane, winBoxPos));
-    //OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (width): this->pane->mBR.x = %f | this->pane->mTL.x = %f\n",this->pane->mBR.x, this->pane->mTL.x));
     return winBoxPos->mBR.x - winBoxPos->mTL.x;
 }
 float base_pane_height(base_pane *this){
     TBox2__float__ *winBoxPos = &this->pane->mWindowBox;
-    OSReport(MSL_C_PPCEABI_bare_H__printf("base_pane__new (height): this->pane->mBR.y = %f | this->pane->mTL.y = %f\n",winBoxPos->mBR.y, winBoxPos->mTL.y));
     return winBoxPos->mBR.y - winBoxPos->mTL.y;
 }
 

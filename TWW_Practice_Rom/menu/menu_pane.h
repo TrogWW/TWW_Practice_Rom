@@ -14,6 +14,7 @@
 #include "base_pane.h"
 #include "screen_capture.h"
 #include "menu_ddlst.h"
+#include "../DvdThd_PhaseHandler.h"
 
 #define SUB_PANE_SIZE 7
 //typedef struct menu_pane_vtbl menu_pane_vtbl;
@@ -33,8 +34,7 @@ struct menu_pane {
     screen_capture capture;
     base_pane *sub_panes[SUB_PANE_SIZE];
 
-    mDoDvdThd_toMainRam_c * menu_dat_thd;
-    request_of_phase_process_class load_menu_dat_request;
+    DvdThd_PhaseHandler load_warp_menu_handler;
 };
 menu_pane *menu_pane___new(menu_pane *this, JKRArchive *menuArc);
 int menu_pane__phase_1(menu_pane *this);

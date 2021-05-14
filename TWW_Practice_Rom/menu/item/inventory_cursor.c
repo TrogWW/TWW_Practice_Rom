@@ -23,9 +23,8 @@ void inventory_cursor__new(inventory_cursor *this, base_pane *parent){
     this->show_cursor_1 = true;
 }
 void inventory_cursor__draw(inventory_cursor* this, float xPos, float yPos){
-    float xAxisOffset = base_pane_xOffset(this->parent, xPos);
-    float yAxisOffset = base_pane_yOffset(this->parent, yPos);
-
+    float xAxisOffset = xPos;//base_pane_xOffset(this->parent, xPos);
+    float yAxisOffset = yPos;//base_pane_yOffset(this->parent, yPos);
     J2DPicture *curr_cursor;
     if(this->show_cursor_1){
         curr_cursor = &this->cursor_01;

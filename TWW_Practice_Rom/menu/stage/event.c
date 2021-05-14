@@ -23,7 +23,7 @@ int event__new(event *this, int offset){
     if(this->layer_id_count > 0){
         this->layer_ids = ((int)this->layer_ids) + offset;  
     }
-    OSReport(MSL_C_PPCEABI_bare_H__printf("event__new: event_name = %s | this->room_index = %d | this->spawn_id = %d | this->demo_archive_number = %d | this->layer_id_count = %d | this->layer_ids = %X\n",
-        this->event_name, this->room_index, this->spawn_id, this->demo_archive_number,this->layer_id_count,this->layer_ids));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("event__new: event_name = %s | this->room_index = %d | this->spawn_id = %d | this->demo_archive_number = %d | this->layer_id_count = %d | this->layer_ids = %X\n",
+        //this->event_name, this->room_index, this->spawn_id, this->demo_archive_number,this->layer_id_count,this->layer_ids));
 }
 #endif

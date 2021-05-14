@@ -9,8 +9,11 @@
 #include "settings.h"
 #include "menu_new.h"
 #include "tools/frame_advance.h"
+#include "DvdThd_PhaseHandler.c"
+
 
 void _main_loop(){
+    DvdThd_PhaseHandlerList__execute(&PHASE_HANDLER_LIST);
     Update_Digital_Inputs();
     //_menu_exec(&settings);
     if(frame_advance.enabled == false){
