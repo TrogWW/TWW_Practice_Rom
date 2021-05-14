@@ -9,7 +9,7 @@ int area__new(area *this, int offset){
     this->stages = ((int)this->stages) + offset;
 
 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("area__new: area_name = %s\n",this->area_name));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("area__new: area_name = %s\n",this->area_name));
     for (int i = 0; i < this->stage_count; i++)
     {
         //stage *s = &this->stages[i];
