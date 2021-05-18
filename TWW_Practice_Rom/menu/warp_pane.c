@@ -11,7 +11,7 @@
 #define WEEK_FIELD_IDX 6
 
 // #define SPAWNID_MAX 255
-#define LAYER_MAX 9
+#define LAYER_MAX 13
 #define HOUR_MAX 25
 #define WEEK_MAX 7
 
@@ -30,7 +30,7 @@ static warp_pane_vtbl warp_pane____vt = {
     warp_pane__open,
     warp_pane__close
 };
-warp_pane__set_stage_data(warp_pane *this, void *data){
+warp_pane__set_stage_data(warp_pane *this, void *data){ //initialize data after archive is loaded
     this->warp_list = (area_list*)data;
     area_list__new(this->warp_list, (int)data);
 }

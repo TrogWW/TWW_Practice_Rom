@@ -3,5 +3,4 @@
 
 byte nthByte(int number, int n);
 bool isNthBitSet(int i, int n);
-void *memset(void *b, int c, int len);
 #endif

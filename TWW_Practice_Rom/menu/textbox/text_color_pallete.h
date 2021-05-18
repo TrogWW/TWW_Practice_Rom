@@ -24,7 +24,7 @@ _GXColor COLOR_WHITE_90 = {  .r = 0xe6, .g = 0xe6, .b = 0xe6, .a = 0xff };
 _GXColor COLOR_WHITE_70 = {  .r = 0xb3, .g = 0xb3, .b = 0xb3, .a = 0xff };
 _GXColor COLOR_WHITE_60 = {  .r = 0x99, .g = 0x99, .b = 0x99, .a = 0xff };
 _GXColor COLOR_NONE = { .r = 0x00, .g = 0x00, .b = 0x00, .a = 0x00 };
-_GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x3f };
+_GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x2f };
 
 _GXColor COLOR_ITEM_DISABLED = { .r = 0x26, .g = 0x26, .b = 0x26, .a = 0xAA };
 
@@ -36,4 +36,7 @@ text_color_pallete TEXT_PALLETE_WHITE_60 = { &COLOR_WHITE_60, &COLOR_WHITE_60, &
 
 text_color_pallete TEXT_PALLETE_MENU_INACTIVE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_RED };
 
+text_color_pallete TEXT_PALLETE_CODE_ACTIVE_WHITE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_RED };
+text_color_pallete TEXT_PALLETE_CODE_ACTIVE_WHITE_90 = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE_90, &COLOR_RED };
+text_color_pallete TEXT_PALLETE_CODE_ACTIVE_WHITE_70 = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE_70, &COLOR_RED };
 #endif
