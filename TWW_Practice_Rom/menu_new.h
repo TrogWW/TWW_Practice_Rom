@@ -18,16 +18,15 @@
 
 void _menu_exec(Settings* settings){
 
-    //TODO load wiird codes..
-    // if(code_list.load_wiird_code_handler.object == 0){
-    //     DvdThd_PhaseHandler__new(&code_list.load_wiird_code_handler,&wiird_loader_phases, &code_list);
-    //     DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &code_list.load_wiird_code_handler);
-    // }
-    // else{
-    //     if(code_list.load_wiird_code_handler.complete){
-    //         wiird__execute();
-    //     }
-    // }
+    if(code_list.load_wiird_code_handler.object == 0){
+        DvdThd_PhaseHandler__new(&code_list.load_wiird_code_handler,&wiird_loader_phases, &code_list);
+        DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &code_list.load_wiird_code_handler);
+    }
+    else{     
+        if(code_list.load_wiird_code_handler.complete){
+            wiird__execute();
+        }
+    }
     if(load_menu_arc_handler.object == 0){
         OSReport(MSL_C_PPCEABI_bare_H__printf("_menu_exec: loading menu\n"));
         DvdThd_PhaseHandler__new(&load_menu_arc_handler,&load_menu_arc_phases, &load_menu_arc_handler);
@@ -46,6 +45,10 @@ void _menu_exec(Settings* settings){
                 }
             }
             if(main_pane.active){
+                //memory card status?
+                //mDoMemCd_Ctrl_c__getStatus(mDoMemCd_Ctrl_c * this, ulong param_1);g_mDoMemCd_control
+                //int mem_status = mDoMemCd_Ctrl_c__getStatus(&m_Do_MemCard__g_mDoMemCd_control, 0);
+                //OSReport(MSL_C_PPCEABI_bare_H__printf("_menu_exec: mem_status = %X\n",mem_status));
                 menu_pane__update_dDlst(&main_pane);
             }
         }

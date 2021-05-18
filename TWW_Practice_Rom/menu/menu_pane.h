@@ -35,6 +35,7 @@ struct menu_pane {
     base_pane *sub_panes[SUB_PANE_SIZE];
 
     DvdThd_PhaseHandler load_warp_menu_handler;
+    DvdThd_PhaseHandler load_cheat_menu_handler;
 };
 menu_pane *menu_pane___new(menu_pane *this, JKRArchive *menuArc);
 int menu_pane__phase_1(menu_pane *this);
