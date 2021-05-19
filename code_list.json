@@ -1,0 +1,32 @@
+[
+  {
+    "category": "Infinite Mods.",
+    "codes": [
+      {
+        "name": "Infinite Magic",
+        "active": false,
+        "code": "003c4c1c 00000020"
+      },
+      {
+        "name": "Infinite Arrows",
+        "active": false,
+        "code": "003c4c71 00000063"
+      },
+      {
+        "name": "Infinite Bombs",
+        "active": false,
+        "code": "003c4c72 00000063"
+      }
+    ]
+  },
+  {
+    "category": "Misc.",
+    "codes": [
+      {
+        "name": "A to Swim Fast",
+        "active": true,
+        "code": "283ED84A 00000100 0435D548 44610000 E2000001 80008000 2A3ED84A 00000100 0435D548 41900000 E2000001 80008000"
+      }
+    ]
+  }
+]
