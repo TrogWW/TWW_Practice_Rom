@@ -10,12 +10,14 @@
 #include "screen_capture.c"
 #include "cheat_pane.c"
 #include "warp_pane.c"
+#include "watches_pane.c"
 #include "inventory_pane.c"
 #include "../DvdThd_PhaseHandler.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define GZ_MENU_DAT "/res/Menu/gzmenu.dat"
 #define GZ_CODE_LIST_DAT "/res/Menu/code_list.dat"
+#define GZ_WATCHES_DAT "/res/Menu/watches.dat"
 
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
@@ -52,22 +54,28 @@ static int (*load_menu_dat_phases[])(menu_pane *) = {
 int menu_pane__phase_1(menu_pane *this){ 
     this->load_warp_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_MENU_DAT,0,(JKRHeap *)0x0);
     this->load_cheat_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_CODE_LIST_DAT,0,(JKRHeap *)0x0);
+    this->load_watches_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_WATCHES_DAT,0,(JKRHeap *)0x0);
     return 2;   //2 = next phase
 }
 int menu_phase__phase_2(menu_pane *this){ 
     mDoDvdThd_toMainRam_c * warp_menu_data = (mDoDvdThd_toMainRam_c *)this->load_warp_menu_handler.data;
     mDoDvdThd_toMainRam_c * cheat_menu_data = (mDoDvdThd_toMainRam_c *)this->load_cheat_menu_handler.data;
-    if(warp_menu_data->parent.mStatus == 0 || cheat_menu_data->parent.mStatus == 0){
+    mDoDvdThd_toMainRam_c * watches_menu_data = (mDoDvdThd_toMainRam_c *)this->load_watches_menu_handler.data;
+    if(warp_menu_data->parent.mStatus == 0 || cheat_menu_data->parent.mStatus == 0 || watches_menu_data->parent.mStatus == 0){
         return 0; //0 = not complete
     }
     else {
         //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this->menu_dat_thd->mpArchiveHeader = %X\n",warp_menu_data->mpArchiveHeader));
         warp_pane__set_stage_data((warp_pane*)this->sub_panes[0], warp_menu_data->mpArchiveHeader);
         cheat_pane__set_cheat_data((cheat_pane*)this->sub_panes[2], cheat_menu_data->mpArchiveHeader);
+        watches_pane__set_data((watches_pane *)this->sub_panes[4], watches_menu_data->mpArchiveHeader);
+
         mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(warp_menu_data);
         mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(cheat_menu_data);
+        mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(watches_menu_data);
         this->load_warp_menu_handler.complete = true;
         this->load_cheat_menu_handler.complete = true;
+        this->load_watches_menu_handler.complete = true;
         return 4; //4 = complete
     }
 }
@@ -143,7 +151,7 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     this->sub_panes[1] = inventory_pane__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1));
     this->sub_panes[2] = cheat_pane__new(this->sub_panes[2], this, cheats_window, xPadding, yPadding + (yOffset * 2));
     this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, flags_window, xPadding, yPadding + (yOffset * 3), "Flags", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4), "Watches", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[4] = watches_pane__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4));
     this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, debug_window, xPadding, yPadding + (yOffset * 5), "Tools", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[6] = sub_pane_vertical__new(this->sub_panes[6], this, settings_window, xPadding, yPadding + (yOffset * 6), "Settings", &TEXT_PALLETE_WHITE_70, 0);
 

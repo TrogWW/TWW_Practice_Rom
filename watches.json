@@ -1,0 +1,49 @@
+[
+    {
+        "category": "Speed/Location",
+        "watches": [
+            {
+                "display": "Potential Speed",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803CA410,
+                    0X35BC
+                ]
+            },
+            {
+                "display": "Actual Speed",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803BCDE4,
+                    0x444
+                ]
+            },
+            {
+                "display": "X",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E440C 
+                ]
+            },
+            {
+                "display": "Y",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E4410 
+                ]
+            },
+            {
+                "display": "Z",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E4414
+                ]
+            }
+        ]
+    }
+]

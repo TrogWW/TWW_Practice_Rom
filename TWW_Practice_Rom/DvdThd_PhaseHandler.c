@@ -8,7 +8,6 @@ DvdThd_PhaseHandlerList PHASE_HANDLER_LIST;
 DvdThd_PhaseHandlerList__append(DvdThd_PhaseHandlerList *this, DvdThd_PhaseHandler *phase_handler){
     JSUPtrLink *new_link = (JSUPtrLink*)JKernel__operator_new(sizeof(JSUPtrLink));
     JSUPtrLink__JSUPtrLink(new_link, phase_handler);
-    //new_link->mpData = phase_handler;
     JSUPtrList__append(&this->list, new_link);
 }
 DvdThd_PhaseHandlerList__execute(DvdThd_PhaseHandlerList *this){

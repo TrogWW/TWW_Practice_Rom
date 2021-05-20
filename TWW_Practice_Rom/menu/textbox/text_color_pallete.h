@@ -1,4 +1,3 @@
-
 #ifndef TEXT_COLOR_PALLETE_H_INCLUDED
 #define TEXT_COLOR_PALLETE_H_INCLUDED
 #pragma region _input_defines
