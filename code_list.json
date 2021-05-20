@@ -16,6 +16,16 @@
         "name": "Infinite Bombs",
         "active": false,
         "code": "003c4c72 00000063"
+      },
+      {
+        "name": "Infinite Health",
+        "active": false,
+        "code": "01E0197F 00000000 003C4C0B 00000050"
+      },
+      {
+        "name": "Swim Forever",
+        "active": false,
+        "code": "023ca76e 00000384"
       }
     ]
   },
@@ -26,6 +36,11 @@
         "name": "A to Swim Fast",
         "active": true,
         "code": "283ED84A 00000100 0435D548 44610000 E2000001 80008000 2A3ED84A 00000100 0435D548 41900000 E2000001 80008000"
+      },
+      {
+        "name": "Super Hookshot",
+        "active": false,
+        "code": "043F9DFC 48420B00 040F1E68 28030001 043F9E00 43008700 283ED84A 00000140 040F2898 3C000000 E2000001 80008000 2A3ED84A 00000140 040F2898 8001004C E2000001 80008000"
       }
     ]
   }
