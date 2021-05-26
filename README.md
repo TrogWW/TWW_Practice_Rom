@@ -29,3 +29,8 @@ py -3.8 -m pip install -r ww_hacking_api/wwrando/requirements.txt
   ```
 - Replace main.dol in extracted ISO
 - Refer to https://github.com/LagoLunatic/WW_Hacking_API for further documentation
+
+Update ghidra repo
+  window -> defined data -> ww_variables_from_ghidra.csv
+  window -> functions -> ww_functions_from_ghidra.csv
+  data type manager -> right click d_a_title.rel -> export c header -> ww_structs_from_ghidra.h
