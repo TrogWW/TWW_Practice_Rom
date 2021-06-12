@@ -21,5 +21,8 @@
     .org 0x80006450 ; remove original calls to mDoAud_Execute and fapGm_Execute
         nop
         nop
+
+    .org 0x80006558 ; enable development mode
+        li r0, 1
     
 .close
