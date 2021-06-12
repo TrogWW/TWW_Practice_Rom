@@ -162,7 +162,7 @@ void inventory_pane__open(inventory_pane *this){
     inventory_pane__update_item_slots(this);       //set inventory item values
 }
 void inventory_pane__close(inventory_pane *this){
-
+    this->base.pane->parent.mbDraw = false;
 }
 
 #endif

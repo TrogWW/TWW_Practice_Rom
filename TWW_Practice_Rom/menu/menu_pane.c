@@ -10,15 +10,18 @@
 #include "screen_capture.c"
 #include "cheat_pane.c"
 #include "warp_pane.c"
+#include "watches_pane.c"
 #include "inventory_pane.c"
 #include "../DvdThd_PhaseHandler.c"
 
 #define GZ_MENU_BLO "gz-menu.blo"
 #define GZ_MENU_DAT "/res/Menu/gzmenu.dat"
 #define GZ_CODE_LIST_DAT "/res/Menu/code_list.dat"
+#define GZ_WATCHES_DAT "/res/Menu/watches.dat"
 
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
+#define BG00_TEXT 0x42473030
 //#define WARP_TEXT 0x726f6f74
 
 #define MAIN_TEXT 0x4D41494E
@@ -52,22 +55,28 @@ static int (*load_menu_dat_phases[])(menu_pane *) = {
 int menu_pane__phase_1(menu_pane *this){ 
     this->load_warp_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_MENU_DAT,0,(JKRHeap *)0x0);
     this->load_cheat_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_CODE_LIST_DAT,0,(JKRHeap *)0x0);
+    this->load_watches_menu_handler.data = mDoDvdThd_toMainRam_c__create(GZ_WATCHES_DAT,0,(JKRHeap *)0x0);
     return 2;   //2 = next phase
 }
 int menu_phase__phase_2(menu_pane *this){ 
     mDoDvdThd_toMainRam_c * warp_menu_data = (mDoDvdThd_toMainRam_c *)this->load_warp_menu_handler.data;
     mDoDvdThd_toMainRam_c * cheat_menu_data = (mDoDvdThd_toMainRam_c *)this->load_cheat_menu_handler.data;
-    if(warp_menu_data->parent.mStatus == 0 || cheat_menu_data->parent.mStatus == 0){
+    mDoDvdThd_toMainRam_c * watches_menu_data = (mDoDvdThd_toMainRam_c *)this->load_watches_menu_handler.data;
+    if(warp_menu_data->parent.mStatus == 0 || cheat_menu_data->parent.mStatus == 0 || watches_menu_data->parent.mStatus == 0){
         return 0; //0 = not complete
     }
     else {
         //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane__phase_2: this->menu_dat_thd->mpArchiveHeader = %X\n",warp_menu_data->mpArchiveHeader));
         warp_pane__set_stage_data((warp_pane*)this->sub_panes[0], warp_menu_data->mpArchiveHeader);
         cheat_pane__set_cheat_data((cheat_pane*)this->sub_panes[2], cheat_menu_data->mpArchiveHeader);
+        watches_pane__set_data((watches_pane *)this->sub_panes[4], watches_menu_data->mpArchiveHeader);
+
         mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(warp_menu_data);
         mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(cheat_menu_data);
+        mDoDvdThd_toMainRam_c__mDoDvdThd_toMainRam_c_destructor(watches_menu_data);
         this->load_warp_menu_handler.complete = true;
         this->load_cheat_menu_handler.complete = true;
+        this->load_watches_menu_handler.complete = true;
         return 4; //4 = complete
     }
 }
@@ -120,7 +129,8 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
     this->active = false;
     this->base.cursor_active = true;
-
+    this->background = (J2DPane *)J2DScreen__search(&this->screen, BG00_TEXT);
+    
     J2DWindow* warp_window = (J2DWindow*)J2DScreen__search(&this->screen, WPMN_TEXT);
     J2DWindow* inventory_window = (J2DWindow*)J2DScreen__search(&this->screen, INVN_TEXT);
     J2DWindow* cheats_window = (J2DWindow*)J2DScreen__search(&this->screen, CHTS_TEXT);
@@ -128,7 +138,6 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     J2DWindow* watches_window = (J2DWindow*)J2DScreen__search(&this->screen, WTCH_TEXT);
     J2DWindow* debug_window = (J2DWindow*)J2DScreen__search(&this->screen, DEBG_TEXT);
     J2DWindow* settings_window = (J2DWindow*)J2DScreen__search(&this->screen, STNG_TEXT);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: cheats_window = %X\n",cheats_window));
 
     float xPadding = 10.0f;
     float yPadding = 30.0f;
@@ -136,14 +145,11 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
     float yOffset = height / SUB_PANE_SIZE;
 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
-    
-
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
     this->sub_panes[1] = inventory_pane__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1));
     this->sub_panes[2] = cheat_pane__new(this->sub_panes[2], this, cheats_window, xPadding, yPadding + (yOffset * 2));
     this->sub_panes[3] = sub_pane_vertical__new(this->sub_panes[3], this, flags_window, xPadding, yPadding + (yOffset * 3), "Flags", &TEXT_PALLETE_WHITE_70, 0);
-    this->sub_panes[4] = sub_pane_vertical__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4), "Watches", &TEXT_PALLETE_WHITE_70, 0);
+    this->sub_panes[4] = watches_pane__new(this->sub_panes[4], this, watches_window, xPadding, yPadding + (yOffset * 4));
     this->sub_panes[5] = sub_pane_vertical__new(this->sub_panes[5], this, debug_window, xPadding, yPadding + (yOffset * 5), "Tools", &TEXT_PALLETE_WHITE_70, 0);
     this->sub_panes[6] = sub_pane_vertical__new(this->sub_panes[6], this, settings_window, xPadding, yPadding + (yOffset * 6), "Settings", &TEXT_PALLETE_WHITE_70, 0);
 
@@ -161,7 +167,7 @@ void menu_pane__draw(menu_pane *this){
     J2DGrafContext* pCtx = (J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph;
     J2DGrafContext__setPort((J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph);
 
-
+    
     //draw pane background
     J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
@@ -187,6 +193,8 @@ void menu_pane__draw(menu_pane *this){
 
 void menu_pane__hide(menu_pane *this){
     this->active = false;
+    this->background->mbDraw = false;
+    this->base.pane->parent.mbDraw = false;
 }
 
 void menu_pane__update_cursor(menu_pane *this){
@@ -230,6 +238,9 @@ void menu_pane__update_cursor(menu_pane *this){
 }
 void menu_pane__open(menu_pane *this){
     this->active = true;
+    this->background->mbDraw = true;
+    this->base.pane->parent.mbDraw = true;
+
     base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
     active_sub_pane->vptr->open(active_sub_pane);   //call sub pane open function
 }
@@ -238,12 +249,16 @@ void menu_pane__close(menu_pane *this){
     //dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture); // this was causing the values in this->sub_panes to be incorrect?
     d_menu_window__dMs_capture_c = 0;
     d_meter__dMenu_flagSet(0);
+    byte old_status = d_meter__dMenu_getMenuStatus();
     d_meter__dMenu_setMenuStatus(1);
-    d_meter__dMenu_setMenuStatusOld();
+    d_meter__dMenu_setMenuStatusOld(old_status);
     this->active = false;
 
     base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
     active_sub_pane->vptr->close(active_sub_pane);   //call sub pane open function
+
+    this->background->mbDraw = false;
+    this->base.pane->parent.mbDraw = false;
 }
 void menu_pane__update_dDlst(menu_pane *this){
     d_meter__dMenu_flagSet(1);  //this is a flag the menu code checks to see if it should render screen capture. also pauses the game
@@ -258,7 +273,8 @@ void menu_pane__update_dDlst(menu_pane *this){
                     &this->menu_ddlst_item);
 
     d_meter__dMenu_flagSet(1);
+    byte old_status = d_meter__dMenu_getMenuStatus();
     d_meter__dMenu_setMenuStatus(2);
-    d_meter__dMenu_setMenuStatusOld();  
+    d_meter__dMenu_setMenuStatusOld(old_status);  
 }
 #endif

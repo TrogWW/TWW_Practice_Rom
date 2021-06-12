@@ -276,7 +276,9 @@ void warp_pane__update_cursor(warp_pane *this){
 }
 
 void warp_pane__open(warp_pane *this){}
-void warp_pane__close(warp_pane *this){}
+void warp_pane__close(warp_pane *this){
+    this->base.pane->parent.mbDraw = false;
+}
 
 void warp_pane__warp(warp_pane *this){
     stage *current_stage = warp_pane__current_stage(this);

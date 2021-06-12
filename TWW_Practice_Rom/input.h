@@ -29,7 +29,24 @@
 # define Y_PRESSED (1 << 11)
 # define START_PRESSED (1 << 12)
 
+
+enum Inputs {
+    D_PAD_LEFT = 0,
+    D_PAD_RIGHT = 1,
+    D_PAD_DOWN = 2,
+    D_PAD_UP = 3,
+    Z = 4,
+    R = 5,
+    L = 6,
+    X = 7,
+    Y = 8,
+    A = 9,
+    B = 10,
+    START = 11
+} Inputs;
+
 #include "memory.h"
+
 
 typedef struct DigitalInput {
     int input;
@@ -39,6 +56,11 @@ typedef struct DigitalInput {
     int hold_count;
     short cpadInfo;
 } DigitalInput;
+
+bool Two_Inputs_Pressed(DigitalInput *input1, DigitalInput *input2);
+void Update_Digital_Input(DigitalInput *this, int currentInput);
+void Input_CButton();
+void Update_Digital_Inputs();
 
 DigitalInput DIGITAL_INPUTS[12] = {
     { .input = D_PAD_LEFT_PRESSED, .cpadInfo = 0x8000 },
@@ -54,6 +76,9 @@ DigitalInput DIGITAL_INPUTS[12] = {
     { .input = B_PRESSED, .cpadInfo = 0x0080 },
     { .input = START_PRESSED, .cpadInfo = 0x0010 }
 };
+
+
+
 bool Two_Inputs_Pressed(DigitalInput *input1, DigitalInput *input2){
     if(input1->pressed && input2->pressed || 
                input1->held && input2->pressed ||
@@ -106,6 +131,8 @@ void Input_CButton(){
     short * cpadInfo = CPADINFO_PTR;
     *cpadInfo = new_input;
 }
+
+#include "menu/load_menu_context.c" //include to check if main pane is active
 void Update_Digital_Inputs(){
     m_Do_controller_pad__mDoCPd_Read();
     JUTGamePad* gamePad = (JUTGamePad*)JUTGamePad__getGamePad(0);
@@ -115,22 +142,13 @@ void Update_Digital_Inputs(){
     for(int i = 0; i < 12; i++){
         Update_Digital_Input(&DIGITAL_INPUTS[i], currentInput);
     }
+    if(main_pane.active){ //debug menu open, disable outside inputs
+        short * cpadInfo = CPADINFO_PTR;
+        *cpadInfo = 0; //disable controller inputs outside of debug menu;
+    }
 }
 
-enum Inputs {
-    D_PAD_LEFT = 0,
-    D_PAD_RIGHT = 1,
-    D_PAD_DOWN = 2,
-    D_PAD_UP = 3,
-    Z = 4,
-    R = 5,
-    L = 6,
-    X = 7,
-    Y = 8,
-    A = 9,
-    B = 10,
-    START = 11
-} Inputs;
+
 /*enum Digital_Input {
     D_PAD_LEFT = D_PAD_LEFT_PRESSED,
     D_PAD_RIGHT = D_PAD_RIGHT_PRESSED,

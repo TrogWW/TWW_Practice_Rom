@@ -1,0 +1,119 @@
+[
+    {
+        "category": "Speed/Location",
+        "watches": [
+            {
+                "display": "Stage",
+                "active": false,
+                "flag": "%s",
+                "address": [ 
+                    0x803C9D3C
+                ]
+            },
+            {
+                "display": "Room",
+                "active": false,
+                "flag": "%d",
+                "address": [ 
+                    0x803C2338
+                ]
+            },
+            {
+                "display": "X",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E440C 
+                ]
+            },
+            {
+                "display": "Y",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E4410 
+                ]
+            },
+            {
+                "display": "Z",
+                "active": false,
+                "flag": "%f",
+                "address": [ 
+                    0x803E4414
+                ]
+            },
+            {
+                "display": "Speed",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803CA410,
+                    0X35BC
+                ]
+            },
+            {
+                "display": "Displacement",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803BCDE4,
+                    0x444
+                ]
+            }
+        ]
+    },
+    {
+        "category": "Events",
+        "watches": [
+            {
+                "display": "Storage",
+                "active": false,
+                "flag": "%hhx",
+                "address": [ 
+                    0x803C9EA3
+                ]
+            }
+        ]
+    },
+    {
+        "category": "Animations",
+        "watches": [
+            {
+                "display": "Link's State",
+                "active": false,
+                "flag": "%d",
+                "address": [
+                    0x803CA410,
+                    0x31D8
+                ]
+            },
+            {
+                "display": "Animation Length",
+                "active": false,
+                "flag": "%hi",
+                "address": [
+                    0x803CA410,
+                    0x3034
+                ]
+            },
+            {
+                "display": "Animation Increment",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803CA410,
+                    0x3038
+                ]
+            },
+            {
+                "display": "Animation Frame",
+                "active": false,
+                "flag": "%f",
+                "address": [
+                    0x803CA410,
+                    0x303C
+                ]
+            }
+        ]
+    }
+]

@@ -14,8 +14,7 @@ int area__new(area *this, int offset){
     {
         //stage *s = &this->stages[i];
         stage__new(&this->stages[i], offset);
-    }
-    
+    }  
 }
 
 #endif

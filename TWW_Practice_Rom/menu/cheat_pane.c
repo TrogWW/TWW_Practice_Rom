@@ -173,9 +173,9 @@ void cheat_pane__update_cursor(cheat_pane *this){
 }
 void cheat_pane__open(cheat_pane *this){}
 void cheat_pane__close(cheat_pane *this){
-    OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__close: this->category_list->category_count = %d | this->category_list = %X\n", this->category_list->category_count, this->category_list));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__close: this->category_list->category_count = %d | this->category_list = %X\n", this->category_list->category_count, this->category_list));
     wiird_code_list__create_category_list(&code_list, this->category_list);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__close: CLOSED\n"));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__close: CLOSED\n"));
 }
 
 #endif

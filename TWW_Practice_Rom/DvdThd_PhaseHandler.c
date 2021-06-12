@@ -8,12 +8,13 @@ DvdThd_PhaseHandlerList PHASE_HANDLER_LIST;
 DvdThd_PhaseHandlerList__append(DvdThd_PhaseHandlerList *this, DvdThd_PhaseHandler *phase_handler){
     JSUPtrLink *new_link = (JSUPtrLink*)JKernel__operator_new(sizeof(JSUPtrLink));
     JSUPtrLink__JSUPtrLink(new_link, phase_handler);
-    //new_link->mpData = phase_handler;
     JSUPtrList__append(&this->list, new_link);
 }
 DvdThd_PhaseHandlerList__execute(DvdThd_PhaseHandlerList *this){
+    if((int)this->list.mpHead == 0){    //no data assigned to list, return
+        return;
+    }
     JSUPtrLink *current_link = this->list.mpHead;
-
     while(current_link != 0 && current_link->mpData != 0){
         DvdThd_PhaseHandler *current_phase_handler = (DvdThd_PhaseHandler *)current_link->mpData;
         
@@ -29,6 +30,8 @@ DvdThd_PhaseHandlerList__execute(DvdThd_PhaseHandlerList *this){
 }
 DvdThd_PhaseHandler__new(DvdThd_PhaseHandler *this, int (*phase_list[])(void *), void *object){
     this->phase_list = phase_list;
+    this->request_of_phase.mpTbl = NULL;
+    this->request_of_phase.mStep = 0;
     this->object = object;
     this->complete = false;
 }

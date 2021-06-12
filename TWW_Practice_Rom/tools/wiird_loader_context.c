@@ -27,20 +27,18 @@ static int (*wiird_loader_phases[])(wiird_code_list *) = {
 };
 
 int wiird_loader__phase_1(wiird_code_list *this){ 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_loader__phase_1: PHASE 1\n"));
     this->load_wiird_code_handler.data = mDoDvdThd_toMainRam_c__create(CODEHANDLER_DAT,0,(JKRHeap *)0x0);
     //this->load_gct_codes_handler.data = mDoDvdThd_toMainRam_c__create(CODES_DAT,0,(JKRHeap *)0x0);
     return 2;   //2 = next phase
 }
 int wiird_loader__phase_2(wiird_code_list *this){
-    OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_loader__phase_2: PHASE 2\n")); 
     mDoDvdThd_toMainRam_c * wiird_code_data = (mDoDvdThd_toMainRam_c *)this->load_wiird_code_handler.data;
     //mDoDvdThd_toMainRam_c * gct_code_data = (mDoDvdThd_toMainRam_c *)this->load_gct_codes_handler.data;
     if(wiird_code_data->parent.mStatus == 0){// || gct_code_data->parent.mStatus == 0){
         return 0; //0 = not complete
     }
     else{
-        OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_loader__phase_2: FINISHED_LOADING this->menu_dat_thd->mpArchiveHeader = %X\n",wiird_code_data->mpArchiveHeader));
+        //OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_loader__phase_2: FINISHED_LOADING this->menu_dat_thd->mpArchiveHeader = %X\n",wiird_code_data->mpArchiveHeader));
 
         cLib_memSet((void *)WIIRD_ADDRESS, 0, (int)((int)WIIRD_CODELIST_END_ADDRESS - (int)WIIRD_ADDRESS)); //clear wiird memory region
         
@@ -55,7 +53,7 @@ int wiird_loader__phase_2(wiird_code_list *this){
 }
 
 void wiird_code_list__add(wiird_code_list *this, wiird_code *code){
-    OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__add: ADDING code->code_name %s | code->code_name %X | code->code_arr_count %d | code_list %X\n", code->code_name, code->code_name, code->code_arr_count, &this->code_list));
+   // OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__add: ADDING code->code_name %s | code->code_name %X | code->code_arr_count %d | code_list %X\n", code->code_name, code->code_name, code->code_arr_count, &this->code_list));
     JSUPtrLink *new_link = (JSUPtrLink*)JKernel__operator_new(sizeof(JSUPtrLink));
     JSUPtrLink__JSUPtrLink(new_link, code);
     JSUPtrList__append(&this->code_list, new_link);
@@ -77,7 +75,7 @@ void wiird_code_list__write_code_list(wiird_code_list *this){
     JSUPtrLink *current_link = this->code_list.mpHead;
     while(current_link != 0 && current_link->mpData != 0){
         wiird_code *code = (wiird_code *)current_link->mpData;
-        OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__write_code_list: LINKED CODE code->code_name = %s | code->code_arr_count = %d | code = %X\n", code->code_name, code));
+        //OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__write_code_list: LINKED CODE code->code_name = %s | code->code_arr_count = %d | code = %X\n", code->code_name, code));
         wiird_code_list__write_bytes(this, (byte *)code->code_arr, (int)(code->code_arr_count * 4));
         current_link = current_link->mpNext;
     }
@@ -87,7 +85,7 @@ void wiird_code_list__write_code_list(wiird_code_list *this){
 void wiird_code_list__create_category_list(wiird_code_list *this, wiird_category_list *category_list){
     //void JSUPtrList__JSUPtrList_destructor(JSUPtrList * this);
     
-    OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: BEFORE this->code_list.mCount = %d | category_list->category_count = %d | category_list = %X\n", this->code_list.mCount, category_list->category_count, category_list));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: BEFORE this->code_list.mCount = %d | category_list->category_count = %d | category_list = %X\n", this->code_list.mCount, category_list->category_count, category_list));
     if(this->code_list.mCount > 0){
         JSUPtrList__JSUPtrList_destructor(&this->code_list);    //reset code list
     }
@@ -95,7 +93,7 @@ void wiird_code_list__create_category_list(wiird_code_list *this, wiird_category
     
     for(int i = 0; i < category_list->category_count; i++){
         wiird_category *curr_category = &category_list->categories[i];
-        OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: curr_category->category_name = %s | curr_category = %X\n", curr_category->category_name, curr_category));
+        //OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: curr_category->category_name = %s | curr_category = %X\n", curr_category->category_name, curr_category));
         for(int j = 0; j < curr_category->code_count; j++){
             wiird_code *curr_code = &curr_category->code_list[j];
             if(curr_code->is_active == 1){
@@ -103,7 +101,7 @@ void wiird_code_list__create_category_list(wiird_code_list *this, wiird_category
             }
         }
     }
-    OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: AFTER this->code_list.mCount = %d\n", this->code_list.mCount));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("wiird_code_list__create_category_list: AFTER this->code_list.mCount = %d\n", this->code_list.mCount));
     wiird_code_list__write_code_list(this);
 }
 #endif
