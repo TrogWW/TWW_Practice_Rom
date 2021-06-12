@@ -32,6 +32,7 @@ struct menu_pane {
     bool active;
     J2DScreen screen;
     screen_capture capture;
+    J2DPane *background;
     base_pane *sub_panes[SUB_PANE_SIZE];
 
     DvdThd_PhaseHandler load_warp_menu_handler;

@@ -3,11 +3,13 @@
 #include "load_menu_context.h"
 #include "../DvdThd_PhaseHandler.c"
 #include "menu_pane.c"
+#include "display/watches_display.c"
 
 
 #define RES_NAME "gzmenu"
 
 menu_pane main_pane;        //the base pane that contains all sub panes
+
 
 DvdThd_PhaseHandler load_menu_arc_handler;  //handler to load our arc
 JKRArchive *load_menu_arc = 0;              //archive pointer to our blo
@@ -43,6 +45,7 @@ int load_menu_arc__phase_3(DvdThd_PhaseHandler *this){
     }
     else{
         menu_pane___new(&main_pane, load_menu_arc);
+        watches_display_pane___new(&WATCHES_DISPLAY_UI, &main_pane.screen);
         this->complete = true;
         return 4;  //0 = complete
     }

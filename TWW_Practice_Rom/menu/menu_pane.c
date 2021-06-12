@@ -21,6 +21,7 @@
 
 #define root_TEXT 0x524f4f54
 #define ROOT_TEXT 0x524f4f54
+#define BG00_TEXT 0x42473030
 //#define WARP_TEXT 0x726f6f74
 
 #define MAIN_TEXT 0x4D41494E
@@ -128,7 +129,8 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
 
     this->active = false;
     this->base.cursor_active = true;
-
+    this->background = (J2DPane *)J2DScreen__search(&this->screen, BG00_TEXT);
+    
     J2DWindow* warp_window = (J2DWindow*)J2DScreen__search(&this->screen, WPMN_TEXT);
     J2DWindow* inventory_window = (J2DWindow*)J2DScreen__search(&this->screen, INVN_TEXT);
     J2DWindow* cheats_window = (J2DWindow*)J2DScreen__search(&this->screen, CHTS_TEXT);
@@ -136,16 +138,12 @@ menu_pane* menu_pane___new(menu_pane *this, JKRArchive *menuArc){
     J2DWindow* watches_window = (J2DWindow*)J2DScreen__search(&this->screen, WTCH_TEXT);
     J2DWindow* debug_window = (J2DWindow*)J2DScreen__search(&this->screen, DEBG_TEXT);
     J2DWindow* settings_window = (J2DWindow*)J2DScreen__search(&this->screen, STNG_TEXT);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: cheats_window = %X\n",cheats_window));
 
     float xPadding = 10.0f;
     float yPadding = 30.0f;
     float height = base_pane_height(&this->base);
 
     float yOffset = height / SUB_PANE_SIZE;
-
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_pane___new: warp_window = %X\n",warp_window));
-    
 
     this->sub_panes[0] = warp_pane__new(this->sub_panes[0], this, warp_window, xPadding, yPadding + (yOffset * 0));//, 10.0f, 0.0f, "Warp", &TEXT_PALLETE_WHITE, 0);
     this->sub_panes[1] = inventory_pane__new(this->sub_panes[1], this, inventory_window, xPadding, yPadding + (yOffset * 1));
@@ -169,7 +167,7 @@ void menu_pane__draw(menu_pane *this){
     J2DGrafContext* pCtx = (J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph;
     J2DGrafContext__setPort((J2DGrafContext*)g_dComIfG_gameInfo.mp2DOrthoGraph);
 
-
+    
     //draw pane background
     J2DScreen__draw(&this->screen,0.0,0.0, pCtx);
 
@@ -195,6 +193,8 @@ void menu_pane__draw(menu_pane *this){
 
 void menu_pane__hide(menu_pane *this){
     this->active = false;
+    this->background->mbDraw = false;
+    this->base.pane->parent.mbDraw = false;
 }
 
 void menu_pane__update_cursor(menu_pane *this){
@@ -238,6 +238,9 @@ void menu_pane__update_cursor(menu_pane *this){
 }
 void menu_pane__open(menu_pane *this){
     this->active = true;
+    this->background->mbDraw = true;
+    this->base.pane->parent.mbDraw = true;
+
     base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
     active_sub_pane->vptr->open(active_sub_pane);   //call sub pane open function
 }
@@ -246,12 +249,16 @@ void menu_pane__close(menu_pane *this){
     //dDlst_MENU_CAPTURE_c__dDlst_MENU_CAPTURE_c_destructor(&this->capture.dDlst_screen_capture); // this was causing the values in this->sub_panes to be incorrect?
     d_menu_window__dMs_capture_c = 0;
     d_meter__dMenu_flagSet(0);
+    byte old_status = d_meter__dMenu_getMenuStatus();
     d_meter__dMenu_setMenuStatus(1);
-    d_meter__dMenu_setMenuStatusOld();
+    d_meter__dMenu_setMenuStatusOld(old_status);
     this->active = false;
 
     base_pane *active_sub_pane = this->sub_panes[this->base.cursor];
     active_sub_pane->vptr->close(active_sub_pane);   //call sub pane open function
+
+    this->background->mbDraw = false;
+    this->base.pane->parent.mbDraw = false;
 }
 void menu_pane__update_dDlst(menu_pane *this){
     d_meter__dMenu_flagSet(1);  //this is a flag the menu code checks to see if it should render screen capture. also pauses the game
@@ -266,7 +273,8 @@ void menu_pane__update_dDlst(menu_pane *this){
                     &this->menu_ddlst_item);
 
     d_meter__dMenu_flagSet(1);
+    byte old_status = d_meter__dMenu_getMenuStatus();
     d_meter__dMenu_setMenuStatus(2);
-    d_meter__dMenu_setMenuStatusOld();  
+    d_meter__dMenu_setMenuStatusOld(old_status);  
 }
 #endif

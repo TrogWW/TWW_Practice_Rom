@@ -9,6 +9,7 @@ static void* dlst_vtbl[] = {
 };
 
 void menu_ddlst___new(menu_ddlst *this, base_pane *menu){
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_ddlst___new: START = %X\n"));
     if(this == 0){
         this = (menu_ddlst*)JKernel__operator_new(sizeof(menu_ddlst));
         if(this == 0){
@@ -19,6 +20,7 @@ void menu_ddlst___new(menu_ddlst *this, base_pane *menu){
         //implement virtual function 'draw' for dDlst_base_c
     this->base.vtbl = dlst_vtbl;
     this->menu = menu; 
+    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_ddlst___new: END = %X\n"));
 }
 void menu_ddlst_draw(menu_ddlst *this){
     this->menu->vptr->draw(this->menu);

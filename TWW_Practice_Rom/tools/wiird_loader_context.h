@@ -8,7 +8,6 @@ typedef struct wiird_code_list {
     DvdThd_PhaseHandler load_wiird_code_handler;
     JSUPtrList code_list;
     byte *write_bytes_location
-
 } wiird_code_list;
 
 int wiird_loader__phase_1(wiird_code_list *this);

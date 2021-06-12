@@ -5,6 +5,8 @@
 #include "textbox/textbox.h"
 #include "watch/watch_category_list.h"
 
+#define WATCHES_LIMIT 12
+#define WATCH_CATEGORIES_LIMIT 6
 
 typedef struct watches_pane watches_pane;
 typedef struct watches_pane_vtbl {
@@ -19,6 +21,10 @@ struct watches_pane {
     base_pane base;
     base_pane *parent;
     watch_category_list *category_list;
+    int curr_category_index;
+    bool category_window_enabled;
+    GzTextBox watches[WATCHES_LIMIT];
+    GzTextBox categories[WATCH_CATEGORIES_LIMIT];
 };
 watches_pane__set_data(watches_pane *this, void *data);
 watches_pane* watches_pane__new(watches_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY);

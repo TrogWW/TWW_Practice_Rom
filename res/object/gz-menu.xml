@@ -25,10 +25,10 @@
       
       <content>
         <rectangle>
-          <x>500</x>
-          <y>200</y>
-          <width>110</width>
-          <height>80</height>
+          <x>20</x>
+          <y>90</y>
+          <width>160</width>
+          <height>300</height>
         </rectangle>
       </content>
       
@@ -405,6 +405,43 @@
 					<color>000000FF</color>
 				</bottom-right>
 			</corners> 
+      <window id="WCAT">
+        <rectangle>
+        <x>240</x>
+        <y>20</y>
+        <width>160</width>
+        <height>100</height>
+        </rectangle>
+        
+        <content>
+        <rectangle>
+          <x>0</x>
+          <y>0</y>
+          <width>160</width>
+          <height>100</height>
+        </rectangle>
+        </content>
+        
+        <alpha>255</alpha>
+              
+        <corners>
+          <top-left>
+            <color>000000FF</color>
+          </top-left>
+
+          <top-right>
+            <color>000000FF</color>
+          </top-right>
+
+          <bottom-left>
+            <color>000000FF</color>
+          </bottom-left>
+
+          <bottom-right>
+            <color>000000FF</color>
+          </bottom-right>
+        </corners> 
+		  </window>	
     </window>
     <window id="DEBG" visible="False">
       <rectangle>
