@@ -15,19 +15,19 @@
 #include "menu/menu_pane.c"
 #include "DvdThd_PhaseHandler.c"
 #include "tools/wiird_loader_context.c"
-
+#include "tools/input_display.c"
 
 void _menu_exec(Settings* settings){
 
     if(code_list.load_wiird_code_handler.object == 0){
         DvdThd_PhaseHandler__new(&code_list.load_wiird_code_handler,&wiird_loader_phases, &code_list);
-        //DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &code_list.load_wiird_code_handler);
+        DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &code_list.load_wiird_code_handler);
     }
-    // else{     
-    //     if(code_list.load_wiird_code_handler.complete){
-    //         wiird__execute();
-    //     }
-    // }
+    else{     
+        if(code_list.load_wiird_code_handler.complete){
+            wiird__execute();
+        }
+    }
     // if(memcard.memcard_handler.object == 0){
     //     DvdThd_PhaseHandler__new(&memcard.memcard_handler,&memcard_boot, &memcard);
     //     DvdThd_PhaseHandlerList__append(&PHASE_HANDLER_LIST, &memcard.memcard_handler);
@@ -52,13 +52,6 @@ void _menu_exec(Settings* settings){
             }
             if(main_pane.active){
                 menu_pane__update_dDlst(&main_pane);
-            }
-            else{
-                if(WATCHES_DISPLAY_UI.watches_list.mCount > 0){
-                   watches_display_pane__update_dDlst(&WATCHES_DISPLAY_UI); 
-                }
-                
-                //watches_display_pane__draw(&WATCHES_DISPLAY_UI);
             }
             // else{
             //     void *savedata = (void *)0x803C4C08;

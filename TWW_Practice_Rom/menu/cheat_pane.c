@@ -19,7 +19,7 @@ static cheat_pane_vtbl cheat_pane____vt = {
 cheat_pane__set_cheat_data(cheat_pane *this, void *data){   
     this->category_list = (wiird_category_list*)data;
     wiird_category_list__new(this->category_list, (int)data);
-    OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__set_cheat_data: this->wiird_categories = %X\n",&this->category_list));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("cheat_pane__set_cheat_data: this->wiird_categories = %X\n",&this->category_list));
 }
 
 cheat_pane* cheat_pane__new(cheat_pane *this, base_pane *parent, J2DWindow *pane, float relativeX, float relativeY){

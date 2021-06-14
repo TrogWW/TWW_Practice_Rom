@@ -13,11 +13,6 @@
 #include "../input.h"
 #include "../settings.h"
 
-void _frame_advance_advance_frame(){
-    m_Do_audio__mDoAud_Execute();
-    f_ap_game__fapGm_Execute();
-}
-
 typedef struct Frame_Advance {
     bool enabled;
     bool advanceFrame;
@@ -27,6 +22,28 @@ Frame_Advance frame_advance = {
   .enabled = false,
   .advanceFrame = false
 };
+
+void _draw_tools(){
+    input_display__draw(&INPUT_DISPLAY);
+    zh_counter__draw(&ZH_COUNTER);
+    if(WATCHES_DISPLAY_UI.watches_list.mCount > 0){
+        if(main_pane.active == false){
+            watches_display_pane__update_dDlst(&WATCHES_DISPLAY_UI); 
+        }
+    }
+}
+
+void _frame_advance_advance_frame(){
+    if(frame_advance.enabled == false){
+        _menu_exec(&settings);
+    }
+    _draw_tools();
+    m_Do_audio__mDoAud_Execute();
+    f_ap_game__fapGm_Execute();
+
+}
+
+
 
 void _frame_advance_exec(Settings* settings){
     if(Two_Inputs_Pressed(&DIGITAL_INPUTS[Z],&DIGITAL_INPUTS[D_PAD_LEFT])){

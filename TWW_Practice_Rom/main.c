@@ -12,13 +12,13 @@
 #include "DvdThd_PhaseHandler.c"
 
 
+
 void _main_loop(){
     DvdThd_PhaseHandlerList__execute(&PHASE_HANDLER_LIST);
     Update_Digital_Inputs();
+
     //_menu_exec(&settings);
-    if(frame_advance.enabled == false){
-        _menu_exec(&settings);
-    }
+
     if(settings.frame_advance_enabled){
         _frame_advance_exec(&settings);
     }

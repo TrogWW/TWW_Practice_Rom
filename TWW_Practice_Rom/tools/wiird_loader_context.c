@@ -7,14 +7,23 @@
 #include "../menu/cheat/wiird_category.h"
 #include "../menu/cheat/wiird_code.h"
 
-#define CODEHANDLER_DAT "/res/Menu/wiirdcodehandler.dat"
-//#define CODES_DAT "/res/Menu/codes.dat"
+// #define CODEHANDLER_DAT "/res/Menu/wiirdcodehandler.dat"
+// //#define CODES_DAT "/res/Menu/codes.dat"
 
+
+#define CODEHANDLER_DAT "/res/Menu/wiirdcodehandler.dat"
 #define WIIRD_ADDRESS 0x80001800
 #define WIIRD_EXECUTE_ADDRESS 0x800018A8    //location of _start function
 #define WIIRD_CODELIST_ADDRESS 0x80001906
 #define WIIRD_CODELIST_START 0x800022A8     //where to write GCT file
 #define WIIRD_CODELIST_END_ADDRESS 0x80003000      
+
+// #define CODEHANDLER_DAT "/res/Menu/wiirdcodehandler_debug.dat"
+// #define WIIRD_ADDRESS 0x80001800
+// #define WIIRD_EXECUTE_ADDRESS 0x800018A8    //location of _start function
+// #define WIIRD_CODELIST_ADDRESS 0x80001906
+// #define WIIRD_CODELIST_START 0x800028B8     //where to write GCT file
+// #define WIIRD_CODELIST_END_ADDRESS 0x80003000      
 
 byte CODE_LIST_HEADER[8] = { 0x00, 0xD0, 0xC0, 0xDE,0x00, 0xD0, 0xC0, 0xDE };
 byte CODE_LIST_FOOTER[8] = { 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
