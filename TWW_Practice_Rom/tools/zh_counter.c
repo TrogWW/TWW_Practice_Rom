@@ -23,10 +23,8 @@ void zh_counter__draw(zh_counter *this){
     this->display->mFontHeight = DEFAULT_FONT_HEIGHT * zh_font_size;
 
     //set font pallete
-    this->display->mColorGradient[0] = *TEXT_PALLETE_WHITE.topColorGradiant;
-    this->display->mColorGradient[1] = *TEXT_PALLETE_WHITE.bottomColorGradiant;
-    this->display->mTextColor = *TEXT_PALLETE_WHITE.textColor;
-    this->display->mTextBgColor = *TEXT_PALLETE_WHITE.textBackgroundColor;
+    text_color_pallete *pallete = &TEXT_PALLETE_WHITE;
+
 
 
     int b_press_count = 0;
@@ -36,13 +34,30 @@ void zh_counter__draw(zh_counter *this){
         }
     }
     float b_press_avg = ((float)b_press_count / (float)ZH_DATA_SIZE) * 30.0f;
+    if(b_press_avg > 3.0f){
+        if(b_press_avg > 11.0){
+            pallete = &TEXT_PALLETE_GREEN;
+        }
+        if(b_press_avg > 13.5){
+            pallete = &TEXT_PALLETE_GOLD;
+        }
+        if(b_press_avg < 9.0){
+            pallete = &TEXT_PALLETE_RED;
+        }
+
+        this->display->mColorGradient[0] = *pallete->topColorGradiant;
+        this->display->mColorGradient[1] = *pallete->bottomColorGradiant;
+        this->display->mTextColor = *pallete->textColor;
+        this->display->mTextBgColor = *pallete->textBackgroundColor;
+
+        MSL_C_PPCEABI_bare_H__sprintf(&this->text, "ZH Rate: %f", b_press_avg);
+
+        J2DTextBox__setString(this->display, &this->text);
+
+        J2DTextBox__draw(this->display, zh_xOffset, zh_yOffset, zh_width,2); //2 = hbinding left
+    }
     
 
-    MSL_C_PPCEABI_bare_H__sprintf(&this->text, "ZH Rate: %f", b_press_avg);
-
-    J2DTextBox__setString(this->display, &this->text);
-
-    J2DTextBox__draw(this->display, zh_xOffset, zh_yOffset, zh_width,2); //2 = hbinding left
 
     this->curr_index += 1;
     if(this->curr_index > ZH_DATA_SIZE){
