@@ -23,11 +23,19 @@ _GXColor COLOR_WHITE_90 = {  .r = 0xe6, .g = 0xe6, .b = 0xe6, .a = 0xff };
 _GXColor COLOR_WHITE_70 = {  .r = 0xb3, .g = 0xb3, .b = 0xb3, .a = 0xff };
 _GXColor COLOR_WHITE_60 = {  .r = 0x99, .g = 0x99, .b = 0x99, .a = 0xff };
 _GXColor COLOR_NONE = { .r = 0x00, .g = 0x00, .b = 0x00, .a = 0x00 };
-_GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x2f };
+
+_GXColor COLOR_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0x40 };
+_GXColor COLOR_BRIGHT_RED = { .r = 0xff, .g = 0x00, .b = 0x00, .a = 0xff };
+_GXColor COLOR_GREEN = {  .r = 0x00, .g = 0xff, .b = 0x00, .a = 0xff };
+_GXColor COLOR_GOLD = {  .r = 0xff, .g = 0xd7, .b = 0x00, .a = 0xff };
 
 _GXColor COLOR_ITEM_DISABLED = { .r = 0x26, .g = 0x26, .b = 0x26, .a = 0xAA };
 
 text_color_pallete TEXT_PALLETE_WHITE = { &COLOR_WHITE, &COLOR_WHITE, &COLOR_WHITE, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_RED = { &COLOR_BRIGHT_RED, &COLOR_BRIGHT_RED, &COLOR_BRIGHT_RED, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_GREEN = { &COLOR_GREEN, &COLOR_GREEN, &COLOR_GREEN, &COLOR_NONE };
+text_color_pallete TEXT_PALLETE_GOLD = { &COLOR_GOLD, &COLOR_GOLD, &COLOR_GOLD, &COLOR_NONE };
+
 text_color_pallete TEXT_PALLETE_WHITE_90 = { &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_WHITE_90, &COLOR_NONE };
 text_color_pallete TEXT_PALLETE_WHITE_70 = { &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_WHITE_70, &COLOR_NONE };
 text_color_pallete TEXT_PALLETE_WHITE_60 = { &COLOR_WHITE_60, &COLOR_WHITE_60, &COLOR_WHITE_60, &COLOR_NONE };
