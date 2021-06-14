@@ -20,7 +20,7 @@ void menu_ddlst___new(menu_ddlst *this, base_pane *menu){
         //implement virtual function 'draw' for dDlst_base_c
     this->base.vtbl = dlst_vtbl;
     this->menu = menu; 
-    OSReport(MSL_C_PPCEABI_bare_H__printf("menu_ddlst___new: END = %X\n"));
+    //OSReport(MSL_C_PPCEABI_bare_H__printf("menu_ddlst___new: END = %X\n"));
 }
 void menu_ddlst_draw(menu_ddlst *this){
     this->menu->vptr->draw(this->menu);

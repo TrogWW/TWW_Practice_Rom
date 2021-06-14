@@ -16,12 +16,12 @@ void GzTextBox__new(GzTextBox* this, base_pane *parent, float xAxisOffset, float
     }
     this->parent = parent;
 
-    TBox2__float__ rect = {
-        .mTL.x = 0.0f,
-        .mTL.y = 0.0f,
-        .mBR.x = 0.0f,
-        .mBR.y = 0.0f
-    };
+    // TBox2__float__ rect = {
+    //     .mTL.x = 0.0f,
+    //     .mTL.y = 0.0f,
+    //     .mBR.x = 0.0f,
+    //     .mBR.y = 0.0f
+    // };
     J2DTextBox__J2DTextBox(&this->textbox,"rock_24_20_4i_usa.bfn",text);
     if(this->font != 0){
         J2DTextBox__setFont(&this->textbox, font);

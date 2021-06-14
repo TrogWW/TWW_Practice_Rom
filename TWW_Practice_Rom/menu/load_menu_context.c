@@ -4,6 +4,7 @@
 #include "../DvdThd_PhaseHandler.c"
 #include "menu_pane.c"
 #include "display/watches_display.c"
+#include "../tools/input_display.c"
 
 
 #define RES_NAME "gzmenu"
@@ -46,6 +47,7 @@ int load_menu_arc__phase_3(DvdThd_PhaseHandler *this){
     else{
         menu_pane___new(&main_pane, load_menu_arc);
         watches_display_pane___new(&WATCHES_DISPLAY_UI, &main_pane.screen);
+        input_display__new(&INPUT_DISPLAY);
         this->complete = true;
         return 4;  //0 = complete
     }

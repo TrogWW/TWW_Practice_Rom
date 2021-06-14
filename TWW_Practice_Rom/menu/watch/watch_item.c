@@ -52,6 +52,7 @@ void watch_item__get_display_value(watch_item *this, char* display_value){
     if(address != NULL){
         size_t flag_len = MSL_C_PPCEABI_bare_H__strlen(this->flag);
         int is_type = MSL_C_PPCEABI_bare_H__memcmp(this->flag, "%f", flag_len);
+        
         if(is_type == 0){           //if float
             float *float_val = (float *)address;
             MSL_C_PPCEABI_bare_H__sprintf(display_value, "%f", *float_val);
