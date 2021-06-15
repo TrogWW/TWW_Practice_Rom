@@ -89,7 +89,10 @@ float predict_max_swim_distance(float velocity, float animation_frame, int air_m
 
 //calculate animation frame based on speed + air
 float calc_animation_frame_increment(float velocity, int air){
-    float p1 = MSL_C_PPCEABI_bare_H__abs(velocity) / 36.0f;
+    if(velocity < 0.0f){
+        velocity = velocity * -1.0f;
+    }
+    float p1 = velocity / 36.0f;
     float p2 = 0.6f; //3/5
     float p3 = ((float)(air + 1)) / 900.0f;
     return p1 + p2 + 1.0f - p3;
