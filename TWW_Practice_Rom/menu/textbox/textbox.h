@@ -36,4 +36,7 @@ void GzTextBox__setAbsoluteY(GzTextBox *this, float xAxisOffset);
 void GzTextBox__changeTextColorInt(_GXColor* color, int value);
 void GzTextBox__changeTextColorPercentage(_GXColor* color, float amount);
 
+//helpers for setting textbox data
+void SetTextboxPallete(J2DTextBox *display, text_color_pallete *pallete);
+c;
 #endif

@@ -26,6 +26,7 @@ Frame_Advance frame_advance = {
 void _draw_tools(){
     input_display__draw(&INPUT_DISPLAY);
     zh_counter__draw(&ZH_COUNTER);
+    swim_predictor__draw(&SWIM_PREDICTOR);
     if(WATCHES_DISPLAY_UI.watches_list.mCount > 0){
         if(main_pane.active == false){
             watches_display_pane__update_dDlst(&WATCHES_DISPLAY_UI); 
