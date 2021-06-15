@@ -89,4 +89,16 @@ void GzTextBox__changeTextColorPercentage(_GXColor* color, float amount){
 void GzTextBox__changeTextColorPallete(text_color_pallete *pallete, float amount){
     GzTextBox__changeTextColorPercentage(pallete->textColor, amount);
 }
+
+void SetTextboxPallete(J2DTextBox *display, text_color_pallete *pallete){
+    display->mColorGradient[0] = *pallete->topColorGradiant;
+    display->mColorGradient[1] = *pallete->bottomColorGradiant;
+    display->mTextColor = *pallete->textColor;
+    display->mTextBgColor = *pallete->textBackgroundColor;
+}
+
+void SetTextboxScale(J2DTextBox *display, float scale){
+    display->mFontWidth = DEFAULT_FONT_WIDTH * scale;
+    display->mFontHeight = DEFAULT_FONT_HEIGHT * scale;
+}
 #endif

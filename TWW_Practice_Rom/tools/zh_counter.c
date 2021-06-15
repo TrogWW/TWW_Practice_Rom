@@ -19,8 +19,9 @@ void zh_counter__draw(zh_counter *this){
     }
     this->b_presses[this->curr_index] = DIGITAL_INPUTS[B].pressed;
 
-    this->display->mFontWidth = DEFAULT_FONT_WIDTH * zh_font_size;
-    this->display->mFontHeight = DEFAULT_FONT_HEIGHT * zh_font_size;
+    // this->display->mFontWidth = DEFAULT_FONT_WIDTH * zh_font_size;
+    // this->display->mFontHeight = DEFAULT_FONT_HEIGHT * zh_font_size;
+    SetTextboxScale(this->display, zh_font_size);
 
     //set font pallete
     text_color_pallete *pallete = &TEXT_PALLETE_WHITE;
@@ -45,10 +46,11 @@ void zh_counter__draw(zh_counter *this){
             pallete = &TEXT_PALLETE_RED;
         }
 
-        this->display->mColorGradient[0] = *pallete->topColorGradiant;
-        this->display->mColorGradient[1] = *pallete->bottomColorGradiant;
-        this->display->mTextColor = *pallete->textColor;
-        this->display->mTextBgColor = *pallete->textBackgroundColor;
+        SetTextboxPallete(this->display, pallete);
+        // this->display->mColorGradient[0] = *pallete->topColorGradiant;
+        // this->display->mColorGradient[1] = *pallete->bottomColorGradiant;
+        // this->display->mTextColor = *pallete->textColor;
+        // this->display->mTextBgColor = *pallete->textBackgroundColor;
 
         MSL_C_PPCEABI_bare_H__sprintf(&this->text, "ZH Rate: %f", b_press_avg);
 

@@ -6,7 +6,7 @@
 #include "display/watches_display.c"
 #include "../tools/input_display.c"
 #include "../tools/zh_counter.c"
-
+#include "../tools/swim_predictor.c"
 #define RES_NAME "gzmenu"
 
 menu_pane main_pane;        //the base pane that contains all sub panes
@@ -49,6 +49,7 @@ int load_menu_arc__phase_3(DvdThd_PhaseHandler *this){
         watches_display_pane___new(&WATCHES_DISPLAY_UI, &main_pane.screen);
         input_display__new(&INPUT_DISPLAY);
         zh_counter__new(&ZH_COUNTER);
+        swim_predictor__new(&SWIM_PREDICTOR);
         this->complete = true;
         return 4;  //0 = complete
     }

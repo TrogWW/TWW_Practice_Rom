@@ -115,5 +115,19 @@
                 ]
             }
         ]
-    }
+    },
+    {
+        "category": "Misc.",
+        "watches": [
+            {
+                "display": "Air Meter",
+                "active": false,
+                "flag": "%d",
+                "address": [ 
+                    0x803CA76C
+                ]
+            }
+        ]
+    },
+
 ]
